@@ -56,7 +56,7 @@ public class Vato {
             xa = -4;
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
-            xa = 13;
+            xa = 4;
         }
         if (e.getKeyCode() == KeyEvent.VK_W) {
             ya = -4;
