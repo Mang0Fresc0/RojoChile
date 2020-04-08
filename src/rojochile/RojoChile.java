@@ -14,7 +14,7 @@ import javax.swing.Timer;
 
 public class RojoChile extends JPanel implements ActionListener {
 
-    int lvl = 3;
+    int lvl = 2;
     static int W;
     static int H;
     static int mapWidth;
