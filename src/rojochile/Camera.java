@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 public class Camera {
 
-    static Rectangle shot, loadArea, stillShot, screen;
+    static Rectangle shot, loadArea, stillShot;
     Map map;
     static int xa = 0, ya = 0;
     int lxa = 0, lya = 0;
@@ -40,18 +40,22 @@ public class Camera {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_A) {
             left = true;
+            right = false;
             lxa = Vato.xa;
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             right = true;
+            left = false;
             lxa = Vato.xa;
         }
         if (e.getKeyCode() == KeyEvent.VK_W) {
             up = true;
+            down = false;
             lya = Vato.ya;
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             down = true;
+            up = false;
             lya = Vato.ya;
         }
     }
@@ -112,5 +116,13 @@ public class Camera {
         if (up == down) {
             ya = 0;
         }
+    }
+    public static void displace (int dx, int dy){
+    shot.x += dx;
+    shot.y += dy;
+    stillShot.x += dx;
+    stillShot.y += dy;
+    loadArea.x += dx;
+    loadArea.y += dy;
     }
 }

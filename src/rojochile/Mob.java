@@ -10,19 +10,25 @@ public class Mob {
     int y;
     int height;
     int width;
+    int strength;
+    Rectangle pos;
     boolean aggro;
 
-    public Mob(int x, int y, int width, int height) {
+    public Mob(int x, int y, int width, int height, int strength) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.strength = strength;
+        pos = new Rectangle(x, y, width, height);
     }
 
     public void move() {
-        Rectangle pos = getPos();
         if (pos.intersects(Camera.shot)) {
             aggro = true;
+        }
+        if (pos.intersects(Vato.getPos())) {
+            collision();
         }
         if (pos.intersects(Vato.close())) {
             closeAction();
@@ -40,6 +46,11 @@ public class Mob {
         g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
     }
 
+    public void collision() {
+        Vato.bounce();
+        Vato.hurt(strength);
+    }
+
     public void closeAction() {
 
     }
@@ -53,7 +64,6 @@ public class Mob {
     }
 
     public Rectangle getPos() {
-        Rectangle r = new Rectangle(x, y, width, height);
-        return r;
+        return pos;
     }
 }

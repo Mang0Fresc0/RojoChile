@@ -37,7 +37,7 @@ public class RojoChile extends JPanel implements ActionListener {
         map = new Map(mapWidth / Tile.WIDTH, mapHeight / Tile.HEIGHT);
         camera = new Camera(W, H, map);
         vato = new Vato(this);
-        test = new Mob(500, 500, 30, 50);
+        test = new Mob(500, 500, 30, 50, 100);
         timer.setInitialDelay(0);
 
         addKeyListener(new KeyListener() {
@@ -72,6 +72,13 @@ public class RojoChile extends JPanel implements ActionListener {
     public void move() {
         vato.move();
         camera.move();
+        test.move();
+    }
+    
+    public void gameOver(){
+        //Hay que agregar pantalla de fin del juego o algo
+        this.setVisible(false);
+        System.exit(ABORT);
     }
 
     @Override
