@@ -10,8 +10,8 @@ public class Vato {
     static int y;
     static int xa = 0;
     static int ya = 0;
-    static int w = 30;
-    static int h = 50;
+    static int width = 30;
+    static int height = 50;
 
     int sup = 0;
     private RojoChile game;
@@ -19,21 +19,21 @@ public class Vato {
 
     public Vato(RojoChile game) {
         this.game = game;
-        x = (int) Math.round(Camera.shot.getCenterX() - w / 2);
-        y = (int) Math.round(Camera.shot.getCenterY() - h / 2);
+        x = (int) Math.round(Camera.shot.getCenterX() - width / 2);
+        y = (int) Math.round(Camera.shot.getCenterY() - height / 2);
     }
 
     public void move() {
-        if (x + xa > 0 && x + xa < RojoChile.mapWidth - w) {
+        if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
             x += xa;
         }
-        if (y + h + ya < RojoChile.mapHeight && y + ya > 0) {
+        if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
             y += ya;
         }
     }
 
     public void paint(Graphics2D g) {
-        g.fillRect(x - Camera.shot.x, y - Camera.shot.y, w, h);
+        g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
     }
 
     public void keyReleased(KeyEvent e) {
@@ -67,8 +67,13 @@ public class Vato {
     }
 
     public static Rectangle getPos() {
-        Rectangle r = new Rectangle(x, y, w, h);
+        Rectangle r = new Rectangle(x, y, width, height);
         return r;
     }
-
+    public static Rectangle close() {
+        int rangeX = 400;
+        int rangeY = 400;
+        Rectangle r = new Rectangle(x-rangeX, y-rangeY, width + 2*rangeX, height + 2*rangeY);
+        return r;
+    }
 }

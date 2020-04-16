@@ -26,6 +26,8 @@ public class RojoChile extends JPanel implements ActionListener {
     Vato vato;
     long start;
     long start2;
+    //Hay que quitar este y todas las referencia a él después
+    Mob test;
 
     public RojoChile() throws IOException {
         W = Level.width;
@@ -35,6 +37,7 @@ public class RojoChile extends JPanel implements ActionListener {
         map = new Map(mapWidth / Tile.WIDTH, mapHeight / Tile.HEIGHT);
         camera = new Camera(W, H, map);
         vato = new Vato(this);
+        test = new Mob(500, 500, 30, 50);
         timer.setInitialDelay(0);
 
         addKeyListener(new KeyListener() {
@@ -62,10 +65,8 @@ public class RojoChile extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         start2 = System.nanoTime();
-        System.out.print((start2 - start) * 10E-10 + "   ");
         move();
         repaint();
-        System.out.println((System.nanoTime() - start2) * 10E-10);
     }
 
     public void move() {
@@ -79,6 +80,7 @@ public class RojoChile extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
         map.drawTiles(g2d);
         vato.paint(g2d);
+        test.paint(g2d);
     }
 
     @Override

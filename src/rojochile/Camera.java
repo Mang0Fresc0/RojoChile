@@ -67,10 +67,10 @@ public class Camera {
     }
 
     public void moveShot() {
-        Rectangle charCenterY = new Rectangle(Vato.x, (int) Math.round(Vato.getPos().getCenterY()) - 1, Vato.x + Vato.w, 3);
+        Rectangle charCenterY = new Rectangle(Vato.x, (int) Math.round(Vato.getPos().getCenterY()) - 1, Vato.x + Vato.width, 3);
         Rectangle stillShotCenterY = new Rectangle(stillShot.x, (int) Math.round(stillShot.getCenterY()), stillShot.x + stillShot.width, 1);
         Rectangle lAreaCenterY = new Rectangle(loadArea.x, (int) Math.round(loadArea.getCenterY()), loadArea.x + loadArea.width, 1);
-        Rectangle charCenterX = new Rectangle((int) Math.round(Vato.getPos().getCenterX()) - 1, Vato.y, 3, Vato.y + Vato.h);
+        Rectangle charCenterX = new Rectangle((int) Math.round(Vato.getPos().getCenterX()) - 1, Vato.y, 3, Vato.y + Vato.height);
         Rectangle stillShotCenterX = new Rectangle((int) Math.round(stillShot.getCenterX()), stillShot.y, 1, stillShot.y + stillShot.height);
         Rectangle lAreaCenterX = new Rectangle((int) Math.round(loadArea.getCenterX()), loadArea.y, 1, loadArea.y + loadArea.height);
         int accel = 12;
