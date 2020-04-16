@@ -37,7 +37,7 @@ public class RojoChile extends JPanel implements ActionListener {
         map = new Map(mapWidth / Tile.WIDTH, mapHeight / Tile.HEIGHT);
         camera = new Camera(W, H, map);
         vato = new Vato(this);
-        test = new Mob(500, 500, 30, 50, 100);
+        test = new Mob(500, 500);
         timer.setInitialDelay(0);
 
         addKeyListener(new KeyListener() {

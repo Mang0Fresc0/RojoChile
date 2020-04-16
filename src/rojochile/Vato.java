@@ -15,8 +15,9 @@ public class Vato {
     static int height = 50;
     static boolean inv = false;
     static int invCount = 0;
-    static int health = 500;
+    static int hp = 500;
     static int stamina = 500;
+    static boolean bouncing = false;
 
     int sup = 0;
     private RojoChile game;
@@ -35,7 +36,8 @@ public class Vato {
         if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
             y += ya;
         }
-        if (health < 1) {
+
+        if (hp < 1) {
             game.gameOver();
         }
         if (invCount > 0) {
@@ -48,11 +50,11 @@ public class Vato {
 
     public void paint(Graphics2D g) {
         g.setColor(Color.red);
-        g.fillRect(10, 10, health, 5);
+        g.fillRect(10, 10, hp, 5);
         g.setColor(Color.green);
         g.fillRect(10, 25, stamina, 5);
         g.setColor(Color.black);
-        g.drawRect(10, 10, health, 5);
+        g.drawRect(10, 10, hp, 5);
         g.drawRect(10, 25, stamina, 5);
         if (invCount % 2 == 0) {
             g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
@@ -60,44 +62,48 @@ public class Vato {
     }
 
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            xa = 0;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            xa = 0;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            ya = 0;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            ya = 0;
+        if (!bouncing) {
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                xa = 0;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                xa = 0;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                ya = 0;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                ya = 0;
+            }
         }
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            xa = -4;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            xa = 4;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            ya = -4;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
-            ya = 4;
+        if (!bouncing) {
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                xa = -4;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                xa = 4;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+                ya = -4;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                ya = 4;
+            }
         }
     }
 
-    public static void bounce() {
-        x -= 10 * xa;
-        y -= 10 * ya;
-        Camera.displace(-10 * xa, -10 * ya);
+    public static void bounce(int b, int xo, int yo) {
+        bouncing = true;
+        xa += b * xo;
+        ya += b * yo;
     }
 
     public static void hurt(int dmg) {
         if (!inv) {
-            health -= dmg;
+            hp -= dmg;
             inv = true;
             invCount = 100;
         }
@@ -105,7 +111,7 @@ public class Vato {
 
     public static void hurt(int dmg, int tire) {
         if (!inv) {
-            health -= dmg;
+            hp -= dmg;
             stamina -= tire;
             invCount = 100;
         }
@@ -117,9 +123,8 @@ public class Vato {
     }
 
     public static Rectangle close() {
-        int rangeX = 400;
-        int rangeY = 400;
-        Rectangle r = new Rectangle(x - rangeX, y - rangeY, width + 2 * rangeX, height + 2 * rangeY);
+        int range = 200;
+        Rectangle r = new Rectangle(x - range, y - range, width + 2 * range, height + 2 * range);
         return r;
     }
 }

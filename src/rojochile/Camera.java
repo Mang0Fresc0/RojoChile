@@ -21,19 +21,15 @@ public class Camera {
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_A) {
             left = false;
-            lxa = 0;
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             right = false;
-            lxa = 0;
         }
         if (e.getKeyCode() == KeyEvent.VK_W) {
             up = false;
-            lya = 0;
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             down = false;
-            lya = 0;
         }
     }
 
@@ -41,26 +37,24 @@ public class Camera {
         if (e.getKeyCode() == KeyEvent.VK_A) {
             left = true;
             right = false;
-            lxa = Vato.xa;
         }
         if (e.getKeyCode() == KeyEvent.VK_D) {
             right = true;
             left = false;
-            lxa = Vato.xa;
         }
         if (e.getKeyCode() == KeyEvent.VK_W) {
             up = true;
             down = false;
-            lya = Vato.ya;
         }
         if (e.getKeyCode() == KeyEvent.VK_S) {
             down = true;
             up = false;
-            lya = Vato.ya;
         }
     }
 
     public void move() {
+        lxa = Vato.xa;
+        lya = Vato.ya;
         stillShot.x += stillShot.x + lxa > 0 && stillShot.x + stillShot.width + lxa < RojoChile.mapWidth && xAlign ? lxa : 0;
         stillShot.y += stillShot.y + lya > 0 && stillShot.y + stillShot.height + lya < RojoChile.mapHeight && yAlign ? lya : 0;
         loadArea.x += loadArea.x + lxa > -Math.round(shot.width / 8) && loadArea.x + loadArea.width + lxa < RojoChile.mapWidth + Math.round(shot.width / 8) && xLAAlign ? lxa : 0;
@@ -68,6 +62,11 @@ public class Camera {
         moveShot();
         shot.x += xa;
         shot.y += ya;
+        if (Vato.bouncing) {
+            Vato.bouncing = false;
+            Vato.xa = 0;
+            Vato.ya = 0;
+        }
     }
 
     public void moveShot() {
@@ -83,12 +82,12 @@ public class Camera {
         xAlign = charCenterX.intersects(stillShotCenterX);
         yAlign = charCenterY.intersects(stillShotCenterY);
         if (xAlign) {
-            if (left && shot.x + xa > loadArea.x) {
+            if (left && shot.x - accel > loadArea.x) {
                 xa = -accel;
             } else if (left) {
                 xa = lxa;
             }
-            if (right && shot.x + shot.width + xa < loadArea.x + loadArea.width) {
+            if (right && shot.x + shot.width + accel < loadArea.x + loadArea.width) {
                 xa = accel;
             } else if (right) {
                 xa = lxa;
@@ -97,12 +96,12 @@ public class Camera {
             xa = 0;
         }
         if (yAlign) {
-            if (up && shot.y + ya > loadArea.y) {
+            if (up && shot.y - accel > loadArea.y) {
                 ya = -accel;
             } else if (up) {
                 ya = lya;
             }
-            if (down && shot.y + shot.height + ya < loadArea.y + loadArea.height) {
+            if (down && shot.y + shot.height + accel < loadArea.y + loadArea.height) {
                 ya = accel;
             } else if (down) {
                 ya = lya;
@@ -116,13 +115,5 @@ public class Camera {
         if (up == down) {
             ya = 0;
         }
-    }
-    public static void displace (int dx, int dy){
-    shot.x += dx;
-    shot.y += dy;
-    stillShot.x += dx;
-    stillShot.y += dy;
-    loadArea.x += dx;
-    loadArea.y += dy;
     }
 }

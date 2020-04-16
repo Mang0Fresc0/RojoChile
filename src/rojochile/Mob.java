@@ -3,27 +3,55 @@ package rojochile;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Random;
 
 public class Mob {
 
     int x;
     int y;
-    int height;
-    int width;
-    int strength;
+    int xa = 0;
+    int ya = 0;
+    final int STDATKT = 100;
+    int xOrient = 1;
+    int yOrient = 1;
+    int height = 50;
+    int width = 30;
+    int strength = 100;
+    int hostility = 20;
+    int agility = 10;
+    int speed = 2;
+    int windUp = 0;
+    int kback = 24; //este tiene que ser un factor común entre la longitud y el ancho de la pantalla, o puede que la cámara se rompa.
+    int hp = 1000;
+    int meleeRange = 100;
+    int[] rangedRange = {0, 0};
+    Rectangle meleeAtk;
     Rectangle pos;
     boolean aggro;
+    boolean mAtk = false;
+    boolean rAtk = false;
+    Random r = new Random();
 
-    public Mob(int x, int y, int width, int height, int strength) {
+    public Mob(int x, int y) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-        this.strength = strength;
-        pos = new Rectangle(x, y, width, height);
     }
 
     public void move() {
+        pos = new Rectangle(x, y, width, height);
+        if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
+            x += xa;
+        }
+        if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
+            y += ya;
+        }
+        orient();
+        if (mAtk) {
+            melee();
+        }
+        if (rAtk) {
+            ranged();
+        }
         if (pos.intersects(Camera.shot)) {
             aggro = true;
         }
@@ -42,17 +70,54 @@ public class Mob {
     }
 
     public void paint(Graphics2D g) {
-        g.setColor(Color.orange);
+        if (!mAtk && !rAtk) {
+            g.setColor(Color.orange);
+        } else {
+            g.setColor(Color.white);
+        }
         g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
+        if (mAtk && windUp >= STDATKT) {
+            g.setColor(Color.cyan);
+            g.drawRect(meleeAtk.x - Camera.shot.x, meleeAtk.y - Camera.shot.y, meleeAtk.width, meleeAtk.height);
+            mAtk = false;
+            windUp = 0;
+        }
+        if (rAtk && windUp >= STDATKT) {
+
+        }
     }
 
     public void collision() {
-        Vato.bounce();
         Vato.hurt(strength);
+        Vato.bounce(12, xOrient, yOrient);
     }
 
     public void closeAction() {
-
+        int n = r.nextInt(100);
+        if (!mAtk) {
+            meleeAtk = new Rectangle(x - meleeRange, y - meleeRange, 2 * meleeRange, 2 * meleeRange);
+            if (meleeAtk.intersects(Vato.getPos()) && n + hostility > 80) {
+                mAtk = true;
+            } else if (n < 5) {
+                xa = xOrient * speed;
+            } else if (n >= 5 && n < 10) {
+                ya = yOrient * speed;
+            } else if (n >= 10 && n < 13) {
+                xa = -xOrient * speed;
+            } else if (n >= 13 && n < 15) {
+                ya = -yOrient * speed;
+            } else if (n >= 15 && n < 20) {
+                xa = 0;
+            } else if (n >= 20 && n < 25) {
+                ya = 0;
+            } else if (n >= 25 && n < 27) {
+                xa = 0;
+                ya = 0;
+            }
+        } else {
+            xa = 0;
+            ya = 0;
+        }
     }
 
     public void midAction() {
@@ -63,7 +128,26 @@ public class Mob {
 
     }
 
+    public void melee() {
+        if (windUp < STDATKT) {
+            windUp += agility;
+        }
+        if (windUp >= STDATKT && meleeAtk.intersects(Vato.getPos())) {
+            Vato.hurt(strength);
+            Vato.bounce(kback, xOrient, yOrient);
+        }
+    }
+
+    public void ranged() {
+
+    }
+
     public Rectangle getPos() {
         return pos;
+    }
+
+    public void orient() {
+        xOrient = x < Vato.x ? 1 : -1;
+        yOrient = y < Vato.y ? 1 : -1;
     }
 }
