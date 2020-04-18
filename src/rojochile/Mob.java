@@ -21,7 +21,7 @@ public class Mob {
     int agility = 10;
     int speed = 2;
     int windUp = 0;
-    int kback = 24; //este tiene que ser un factor común entre la longitud y el ancho de la pantalla, o puede que la cámara se rompa.
+    int kback = 24; //este tiene que ser un múltiplo de cuatro, o puede que la cámara se rompa.
     int hp = 1000;
     int meleeRange = 100;
     int[] rangedRange = {0, 0};
@@ -121,11 +121,15 @@ public class Mob {
     }
 
     public void midAction() {
-
+        xa = xOrient * speed;
+        ya = yOrient * speed;
     }
 
     public void farAction() {
-
+        if (aggro) {
+            xa = xOrient * speed;
+            ya = yOrient * speed;
+        }
     }
 
     public void melee() {
