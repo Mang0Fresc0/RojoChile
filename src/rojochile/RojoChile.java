@@ -12,14 +12,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class RojoChile extends JPanel implements ActionListener {
+public class RojoChile extends JPanel {
 
     int lvl = 2;
     static int W;
     static int H;
     static int mapWidth;
     static int mapHeight;
-    Timer timer = new Timer(17, this);
+    Timer timer = new Timer(17, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            start2 = System.nanoTime();
+            move();
+            repaint();
+        }
+    });
     Level level = new Level(lvl);
     Map map;
     Camera camera;
@@ -39,7 +46,7 @@ public class RojoChile extends JPanel implements ActionListener {
         camera = new Camera(W, H, map);
         vato = new Vato(this);
         test = new Mob(500, 500);
-        test2 = new Mob (800,500);
+        test2 = new Mob(800, 500);
         timer.setInitialDelay(0);
 
         addKeyListener(new KeyListener() {
@@ -64,21 +71,14 @@ public class RojoChile extends JPanel implements ActionListener {
         start = System.nanoTime();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        start2 = System.nanoTime();
-        move();
-        repaint();
-    }
-
     public void move() {
         vato.move();
         camera.move();
         test.move();
         test2.move();
     }
-    
-    public void gameOver(){
+
+    public void gameOver() {
         //Hay que agregar pantalla de fin del juego o algo
         this.setVisible(false);
         System.exit(ABORT);
