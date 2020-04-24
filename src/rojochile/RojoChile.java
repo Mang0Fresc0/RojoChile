@@ -78,7 +78,8 @@ public class RojoChile extends JPanel {
                 vato.keyPressed(e);
                 camera.keyPressed(e);
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    pauseres();
+                    paused = !paused;
+                    FakeMouse.visible = paused == true;
                 }
             }
         });
@@ -86,7 +87,6 @@ public class RojoChile extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("siu");
             }
 
             @Override
@@ -95,6 +95,9 @@ public class RojoChile extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
+                if (!paused) {
+                    centerMouse();
+                }
             }
 
             @Override
@@ -118,6 +121,7 @@ public class RojoChile extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 if (!paused) {
                     centerMouse();
+                    System.out.println("siu");
                 }
                 fakeMouse.move(e);
             }
@@ -128,10 +132,12 @@ public class RojoChile extends JPanel {
     }
 
     public void move() {
-        vato.move();
-        camera.move();
-        test.move();
-        test2.move();
+        if (!paused) {
+            vato.move();
+            camera.move();
+            test.move();
+            test2.move();
+        }
     }
 
     public void gameOver() {
@@ -145,16 +151,6 @@ public class RojoChile extends JPanel {
             rob = new Robot();
             rob.mouseMove(centerW, centerH);
         } catch (AWTException ex) {
-        }
-    }
-
-    public void pauseres() {
-        if (!paused) {
-            paused = true;
-            timer.stop();
-        } else {
-            paused = false;
-            timer.start();
         }
     }
 

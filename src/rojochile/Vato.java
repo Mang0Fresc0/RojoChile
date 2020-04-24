@@ -89,10 +89,13 @@ public class Vato {
                 ya = 0;
             }
         }
+        if (e.getKeyCode() == KeyEvent.VK_SHIFT && !RojoChile.paused) {
+            FakeMouse.visible = false;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
-        if (!bouncing) {
+        if (!bouncing && !FakeMouse.visible) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = -4;
             }
@@ -108,6 +111,9 @@ public class Vato {
             if (e.getKeyCode() == KeyEvent.VK_Q) {
                 shoot();
             }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_SHIFT && xa == 0 && ya == 0) {
+            FakeMouse.visible = true;
         }
 
     }
