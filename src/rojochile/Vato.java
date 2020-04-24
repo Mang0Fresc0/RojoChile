@@ -3,6 +3,7 @@ package rojochile;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -19,10 +20,7 @@ public class Vato {
     static int hp = 500;
     static int stamina = 500;
     static boolean bouncing = false;
-
-    int sup = 0;
-    private RojoChile game;
-    static int s = 0;
+    RojoChile game;
     ArrayList<Bala> balas = new ArrayList<>();
 
     public Vato(RojoChile game) {
@@ -30,8 +28,9 @@ public class Vato {
         x = (int) Math.round(Camera.shot.getCenterX() - width / 2);
         y = (int) Math.round(Camera.shot.getCenterY() - height / 2);
     }
-    public void shoot (){
-    balas.add(new Bala(game,x,y));
+
+    public void shoot() {
+        balas.add(new Bala(x, y));
     }
 
     public void move() {
@@ -51,7 +50,7 @@ public class Vato {
         } else {
             inv = false;
         }
-        for(Bala i : balas){
+        for (Bala i : balas) {
             i.movimiento();
         }
     }
@@ -65,13 +64,14 @@ public class Vato {
         g.drawRect(10, 10, hp, 5);
         g.drawRect(10, 25, stamina, 5);
         if (invCount % 2 == 0) {
-        g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
+            g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
         }
-        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.WHITE);
-        for (Bala i:balas) {
-        i.pintar(g);
-    }
+        for (Bala i : balas) {
+            i.pintar(g);
+        }
     }
 
     public void keyReleased(KeyEvent e) {
@@ -105,10 +105,11 @@ public class Vato {
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 4;
             }
-            if(e.getKeyCode()==KeyEvent.VK_Q)
-            shoot();
+            if (e.getKeyCode() == KeyEvent.VK_Q) {
+                shoot();
             }
-        
+        }
+
     }
 
     public static void bounce(int b, int xo, int yo) {
@@ -143,5 +144,5 @@ public class Vato {
         Rectangle r = new Rectangle(x - range, y - range, width + 2 * range, height + 2 * range);
         return r;
     }
-    
+
 }

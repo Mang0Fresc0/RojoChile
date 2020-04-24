@@ -18,11 +18,10 @@ int x;
 int y;
 int xa = 1;
 int ya = 1;
-public RojoChile game;
+int diameter = 5;
 
        
-public Bala (RojoChile games, int x, int y){
-this.game= games;
+public Bala (int x, int y){
 this.x = x;
 this.y= y;
 }
@@ -30,7 +29,7 @@ this.y= y;
    
 public  void pintar (Graphics2D g){
     g.setColor(Color.WHITE);
-    g.fillRect(x-Camera.shot.x, y-Camera.shot.y, 30, 30);
+    g.fillOval(x-Camera.shot.x+Math.round(Vato.width/2), y-Camera.shot.y+Math.round(Vato.height/2), diameter, diameter);
 }
 public void movimiento(){
     x+=xa;

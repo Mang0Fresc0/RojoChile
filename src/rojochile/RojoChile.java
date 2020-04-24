@@ -1,12 +1,20 @@
 package rojochile;
 
+import java.awt.AWTException;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,12 +25,14 @@ public class RojoChile extends JPanel {
     int lvl = 2;
     static int W;
     static int H;
+    static int centerW;
+    static int centerH;
     static int mapWidth;
     static int mapHeight;
+    static boolean paused = false;
     Timer timer = new Timer(17, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            start2 = System.nanoTime();
             move();
             repaint();
         }
@@ -31,8 +41,8 @@ public class RojoChile extends JPanel {
     Map map;
     Camera camera;
     Vato vato;
-    long start;
-    long start2;
+    FakeMouse fakeMouse;
+    Robot rob;
     //Hay que quitar este y todas las referencia a él después
     Mob test;
     Mob test2;
@@ -40,11 +50,14 @@ public class RojoChile extends JPanel {
     public RojoChile() throws IOException {
         W = Level.width;
         H = Level.height;
+        centerW = Math.round(W / 2);
+        centerH = Math.round(H / 2);
         mapWidth = Level.mapWidth;
         mapHeight = Level.mapHeight;
         map = new Map(mapWidth / Tile.WIDTH, mapHeight / Tile.HEIGHT);
         camera = new Camera(W, H, map);
         vato = new Vato(this);
+        fakeMouse = new FakeMouse(centerW, centerH);
         test = new Mob(500, 500);
         test2 = new Mob(800, 500);
         timer.setInitialDelay(0);
@@ -64,11 +77,54 @@ public class RojoChile extends JPanel {
             public void keyPressed(KeyEvent e) {
                 vato.keyPressed(e);
                 camera.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    pauseres();
+                }
             }
         });
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("siu");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if (!paused) {
+                    centerMouse();
+                }
+            }
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (!paused) {
+                    centerMouse();
+                }
+                fakeMouse.move(e);
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (!paused) {
+                    centerMouse();
+                }
+                fakeMouse.move(e);
+            }
+        });
+
         setFocusable(true);
         timer.start();
-        start = System.nanoTime();
     }
 
     public void move() {
@@ -84,6 +140,24 @@ public class RojoChile extends JPanel {
         System.exit(ABORT);
     }
 
+    public void centerMouse() {
+        try {
+            rob = new Robot();
+            rob.mouseMove(centerW, centerH);
+        } catch (AWTException ex) {
+        }
+    }
+
+    public void pauseres() {
+        if (!paused) {
+            paused = true;
+            timer.stop();
+        } else {
+            paused = false;
+            timer.start();
+        }
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -92,6 +166,7 @@ public class RojoChile extends JPanel {
         vato.paint(g2d);
         test.paint(g2d);
         test2.paint(g2d);
+        fakeMouse.paint(g2d);
     }
 
     @Override
@@ -102,6 +177,9 @@ public class RojoChile extends JPanel {
     public static void main(String[] args) throws IOException, InterruptedException {
         JFrame frame = new JFrame("RojoChile");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+                new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
+        frame.getContentPane().setCursor(blankCursor);
         RojoChile game = new RojoChile();
         frame.add(game);
         frame.setResizable(false);
