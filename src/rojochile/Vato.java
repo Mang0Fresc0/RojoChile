@@ -25,8 +25,8 @@ public class Vato {
 
     public Vato(RojoChile game) {
         this.game = game;
-        x = (int) Math.round(Camera.shot.getCenterX() - width / 2);
-        y = (int) Math.round(Camera.shot.getCenterY() - height / 2);
+        x = Math.round(Camera.centerShot.x - width / 2);
+        y = Math.round(Camera.centerShot.y - height / 2);
     }
 
     public void shoot() {
@@ -36,9 +36,11 @@ public class Vato {
     public void move() {
         if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
             x += xa;
+            FakeMouse.x += xa;
         }
         if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
             y += ya;
+            FakeMouse.y += ya;
         }
 
         if (hp < 1) {

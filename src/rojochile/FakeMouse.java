@@ -11,24 +11,28 @@ import java.awt.event.MouseEvent;
 
 public class FakeMouse {
 
-    static int x = 0;
-    static int y = 0;
+    static int x;
+    static int y;
     static int xa;
     static int ya;
     static int diameter = 8;
     static boolean visible = false;
+    static Point prev;
 
-    public FakeMouse(int centerW, int centerH) {
-        x = centerW - Math.round(diameter / 2) + Level.startPosX;
-        y = centerH - Math.round(diameter / 2) + Level.startPosY;
+    public FakeMouse() {
+        //la posicion inicial no es correcta
+        x = Camera.centerShot.x;
+        y = Camera.centerShot.y;
+        prev = new Point(x - Level.startPosX, y - Level.startPosY);
     }
 
     public void move(MouseEvent e) {
-        Point mousePos = MouseInfo.getPointerInfo().getLocation();
         Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        xa = e.getXOnScreen() - prev.x;
+        System.out.println(e.getYOnScreen());
+        System.out.println(prev.y);
+        ya = e.getYOnScreen() - prev.getLocation().y;
         if (!RojoChile.paused) {
-            xa = e.getXOnScreen() - mousePos.x;
-            ya = e.getYOnScreen() - mousePos.getLocation().y;
             if (x + xa > 0 && x + xa < RojoChile.mapWidth - diameter) {
                 x += xa;
             }
@@ -36,13 +40,14 @@ public class FakeMouse {
                 y += ya;
             }
         } else {
-            if (mousePos.x > 0 && mousePos.x < bounds.width - diameter) {
-                x = mousePos.x + Camera.shot.x;
+            if (x + xa > Camera.shot.x && x + xa < Camera.shot.x + RojoChile.W - diameter) {
+                x += xa;
             }
-            if (mousePos.y + diameter < bounds.height && mousePos.y > 0) {
-                y = mousePos.y + Camera.shot.y;
+            if (y + diameter + ya < Camera.shot.y + RojoChile.H && y + ya > Camera.shot.y) {
+                y += ya;
             }
         }
+        prev = MouseInfo.getPointerInfo().getLocation();
     }
 
     public void paint(Graphics2D g) {

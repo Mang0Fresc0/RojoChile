@@ -1,5 +1,6 @@
 package rojochile;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
@@ -10,11 +11,13 @@ public class Camera {
     static int xa = 0, ya = 0;
     int lxa = 0, lya = 0;
     static boolean left, right, up, down, xAlign, yAlign, xLAAlign, yLAAlign;
+    static Point centerShot;
 
     public Camera(int w, int h, Map map) {
         shot = new Rectangle(Level.startPosX, Level.startPosY, w, h);
         stillShot = (Rectangle) shot.clone();
         loadArea = new Rectangle(Math.round(-w / 8) + shot.x, Math.round(-h / 8) + shot.y, Math.round(w * 5 / 4), Math.round(h * 5 / 4));
+        centerShot = new Point((int)shot.getCenterX(), (int) shot.getCenterY());
         this.map = map;
     }
 
@@ -67,6 +70,7 @@ public class Camera {
             Vato.xa = 0;
             Vato.ya = 0;
         }
+        centerShot = new Point((int)shot.getCenterX(), (int) shot.getCenterY());
     }
 
     public void moveShot() {

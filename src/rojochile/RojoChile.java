@@ -5,7 +5,9 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,9 @@ public class RojoChile extends JPanel {
     static int mapWidth;
     static int mapHeight;
     static boolean paused = false;
+    public static Rectangle bounds;
+    static int wideBorderSize;
+    static int borderSize;
     Timer timer = new Timer(17, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -57,7 +62,8 @@ public class RojoChile extends JPanel {
         map = new Map(mapWidth / Tile.WIDTH, mapHeight / Tile.HEIGHT);
         camera = new Camera(W, H, map);
         vato = new Vato(this);
-        fakeMouse = new FakeMouse(centerW, centerH);
+        centerMouse();
+        fakeMouse = new FakeMouse();
         test = new Mob(500, 500);
         test2 = new Mob(800, 500);
         timer.setInitialDelay(0);
@@ -79,6 +85,8 @@ public class RojoChile extends JPanel {
                 camera.keyPressed(e);
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     paused = !paused;
+                    FakeMouse.x = Camera.centerShot.x;
+                    FakeMouse.y = Camera.centerShot.y;
                     FakeMouse.visible = paused == true;
                 }
             }
@@ -97,6 +105,9 @@ public class RojoChile extends JPanel {
             public void mouseEntered(MouseEvent e) {
                 if (!paused) {
                     centerMouse();
+                } else {
+                    FakeMouse.x = e.getXOnScreen();
+                    FakeMouse.y = e.getYOnScreen();
                 }
             }
 
@@ -121,7 +132,6 @@ public class RojoChile extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 if (!paused) {
                     centerMouse();
-                    System.out.println("siu");
                 }
                 fakeMouse.move(e);
             }
@@ -149,7 +159,7 @@ public class RojoChile extends JPanel {
     public void centerMouse() {
         try {
             rob = new Robot();
-            rob.mouseMove(centerW, centerH);
+            rob.mouseMove(centerW + borderSize, centerH + wideBorderSize);
         } catch (AWTException ex) {
         }
     }
@@ -175,11 +185,14 @@ public class RojoChile extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                 new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
-        frame.getContentPane().setCursor(blankCursor);
+        //frame.getContentPane().setCursor(blankCursor);
         RojoChile game = new RojoChile();
         frame.add(game);
         frame.setResizable(false);
         frame.pack();
+        bounds = frame.getBounds();
+        borderSize = (int) Math.round((bounds.getWidth() - W) / 2);
+        wideBorderSize = bounds.height - H - borderSize;
         frame.setVisible(true);
     }
 }
