@@ -30,7 +30,7 @@ public class Vato {
     }
 
     public void shoot() {
-        balas.add(new Bala(x, y));
+        balas.add(new Bala(x + Math.round(width / 2), y + Math.round(height / 2)));
     }
 
     public void move() {
@@ -110,9 +110,9 @@ public class Vato {
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 4;
             }
-            if (e.getKeyCode() == KeyEvent.VK_Q) {
-                shoot();
-            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_Q) {
+            shoot();
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT && xa == 0 && ya == 0) {
             FakeMouse.visible = true;

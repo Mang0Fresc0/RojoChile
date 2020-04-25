@@ -13,26 +13,28 @@ import java.awt.Graphics2D;
  * @author gusal
  */
 public class Bala {
-    
-int x;
-int y;
-int xa = 1;
-int ya = 1;
-int diameter = 5;
 
-       
-public Bala (int x, int y){
-this.x = x;
-this.y= y;
-}
+    double x;
+    double y;
+    double xa;
+    double ya;
+    int diameter = 5;
 
-   
-public  void pintar (Graphics2D g){
-    g.setColor(Color.WHITE);
-    g.fillOval(x-Camera.shot.x+Math.round(Vato.width/2), y-Camera.shot.y+Math.round(Vato.height/2), diameter, diameter);
-}
-public void movimiento(){
-    x+=xa;
-    y+=ya;
-}
+    public Bala(int x, int y) {
+        this.x = x;
+        this.y = y;
+        double angle = FakeMouse.getAngle();
+        xa = Math.cos(angle);
+        ya = Math.sin(angle);
+    }
+
+    public void pintar(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.fillOval((int) Math.round(x - Camera.shot.x - diameter / 2), (int) Math.round(y - Camera.shot.y - diameter / 2), diameter, diameter);
+    }
+
+    public void movimiento() {
+        x += xa;
+        y += ya;
+    }
 }

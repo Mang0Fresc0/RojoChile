@@ -5,7 +5,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -85,8 +84,11 @@ public class RojoChile extends JPanel {
                 camera.keyPressed(e);
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     paused = !paused;
-                    FakeMouse.x = Camera.centerShot.x;
-                    FakeMouse.y = Camera.centerShot.y;
+                    try {
+                        rob = new Robot();
+                        rob.mouseMove(FakeMouse.x - Camera.shot.x + RojoChile.borderSize, FakeMouse.y - Camera.shot.y + RojoChile.wideBorderSize);
+                    } catch (AWTException ex) {
+                    }
                     FakeMouse.visible = paused == true;
                 }
             }
@@ -185,7 +187,7 @@ public class RojoChile extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
                 new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
-        //frame.getContentPane().setCursor(blankCursor);
+        frame.getContentPane().setCursor(blankCursor);
         RojoChile game = new RojoChile();
         frame.add(game);
         frame.setResizable(false);
