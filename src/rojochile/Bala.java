@@ -7,6 +7,8 @@ package rojochile;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 /**
  *
@@ -16,10 +18,13 @@ public class Bala {
 
     double x;
     double y;
+    double prevX;
+    double prevY;
     double xd;
     double yd;
+    int strength = 100;
     int diameter = 5;
-    int speed = 3;
+    int speed = 30;
 
     public Bala(int x, int y) {
         this.x = x;
@@ -35,7 +40,15 @@ public class Bala {
     }
 
     public void movimiento() {
+        prevX = x;
+        prevY = y;
         x += xd * speed;
         y += yd * speed;
+    }
+
+    public boolean intersects(Rectangle target) {
+        Line2D path = new Line2D.Double();
+        path.setLine(prevX, prevY, x, y);
+        return path.intersects(target);
     }
 }

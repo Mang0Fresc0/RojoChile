@@ -60,7 +60,7 @@ public class RojoChile extends JPanel {
         mapHeight = Level.mapHeight;
         map = new Map(mapWidth / Tile.WIDTH, mapHeight / Tile.HEIGHT);
         camera = new Camera(W, H, map);
-        vato = new Vato(this);
+        vato = new Vato();
         centerMouse();
         fakeMouse = new FakeMouse();
         test = new Mob(500, 500);
@@ -152,9 +152,8 @@ public class RojoChile extends JPanel {
         }
     }
 
-    public void gameOver() {
+    public static void gameOver() {
         //Hay que agregar pantalla de fin del juego o algo
-        this.setVisible(false);
         System.exit(ABORT);
     }
 

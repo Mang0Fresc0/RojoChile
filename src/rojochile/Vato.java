@@ -20,11 +20,9 @@ public class Vato {
     static int hp = 500;
     static int stamina = 500;
     static boolean bouncing = false;
-    RojoChile game;
-    ArrayList<Bala> balas = new ArrayList<>();
+    static ArrayList<Bala> balas = new ArrayList<>();
 
-    public Vato(RojoChile game) {
-        this.game = game;
+    public Vato() {
         x = Math.round(Camera.centerShot.x - width / 2);
         y = Math.round(Camera.centerShot.y - height / 2);
     }
@@ -44,7 +42,7 @@ public class Vato {
         }
 
         if (hp < 1) {
-            game.gameOver();
+            RojoChile.gameOver();
         }
         if (invCount > 0) {
             inv = true;
@@ -53,7 +51,12 @@ public class Vato {
             inv = false;
         }
         for (Bala i : balas) {
-            i.movimiento();
+            if (i != null) {
+                i.movimiento();
+                if (!Camera.loadArea.intersects(i.x, i.y, i.diameter, i.diameter)) {
+                    i = null;
+                }
+            }
         }
     }
 

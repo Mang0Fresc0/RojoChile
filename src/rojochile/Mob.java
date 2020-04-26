@@ -30,6 +30,7 @@ public class Mob {
     boolean aggro;
     boolean mAtk = false;
     boolean rAtk = false;
+    boolean dead = false;
     Random r = new Random();
 
     public Mob(int x, int y) {
@@ -38,34 +39,36 @@ public class Mob {
     }
 
     public void move() {
-        pos = new Rectangle(x, y, width, height);
-        if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
-            x += xa;
-        }
-        if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
-            y += ya;
-        }
-        orient();
-        if (mAtk) {
-            melee();
-        }
-        if (rAtk) {
-            ranged();
-        }
-        if (pos.intersects(Camera.shot)) {
-            aggro = true;
-        }
-        if (pos.intersects(Vato.getPos())) {
-            collision();
-        }
-        if (pos.intersects(Vato.close())) {
-            closeAction();
-        } else if (pos.intersects(Camera.stillShot)) {
-            midAction();
-        } else if (pos.intersects(Camera.loadArea)) {
-            farAction();
-        } else {
-            aggro = false;
+        if (!dead) {
+            pos = new Rectangle(x, y, width, height);
+            Checkhurt();
+            if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
+                x += xa;
+            }
+            if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
+                y += ya;
+            }
+            if (mAtk) {
+                melee();
+            }
+            if (rAtk) {
+                ranged();
+            }
+            if (pos.intersects(Camera.shot)) {
+                aggro = true;
+            }
+            if (pos.intersects(Vato.getPos())) {
+                collision();
+            }
+            if (pos.intersects(Vato.close())) {
+                closeAction();
+            } else if (pos.intersects(Camera.stillShot)) {
+                midAction();
+            } else if (pos.intersects(Camera.loadArea)) {
+                farAction();
+            } else {
+                aggro = false;
+            }
         }
     }
 
@@ -74,6 +77,9 @@ public class Mob {
             g.setColor(Color.orange);
         } else {
             g.setColor(Color.white);
+        }
+        if (dead) {
+            g.setColor(Color.red);
         }
         g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
         if (mAtk && windUp >= STDATKT) {
@@ -90,6 +96,17 @@ public class Mob {
     public void collision() {
         Vato.hurt(strength);
         Vato.bounce(12, xOrient, yOrient);
+    }
+
+    public void Checkhurt() {
+        for (Bala i : Vato.balas) {
+            if (i.intersects(pos)) {
+                hp -= i.strength;
+            }
+        }
+        if (hp <= 0) {
+            dead = true;
+        }
     }
 
     public void closeAction() {
