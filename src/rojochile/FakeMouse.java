@@ -10,7 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 
 public class FakeMouse {
-    
+
     static int x;
     static int y;
     static int xa;
@@ -18,14 +18,14 @@ public class FakeMouse {
     static int diameter = 8;
     static boolean visible = false;
     static Point prev;
-    
+
     public FakeMouse() {
         //la posicion inicial no es correcta
         x = Camera.centerShot.x;
         y = Camera.centerShot.y;
         prev = new Point(x + Level.startPosX, y + Level.startPosY);
     }
-    
+
     public void move(MouseEvent e) {
         Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         xa = e.getXOnScreen() - prev.x;
@@ -43,7 +43,7 @@ public class FakeMouse {
         }
         prev = MouseInfo.getPointerInfo().getLocation();
     }
-    
+
     public void paint(Graphics2D g) {
         if (visible) {
             g.setColor(Color.white);
@@ -52,15 +52,23 @@ public class FakeMouse {
             g.fillOval(x - Camera.shot.x - Math.round(diameter / 2), y - Camera.shot.y - Math.round(diameter / 2), diameter, diameter);
         }
     }
-    
+
     public static double getAngle() {
         double angle;
         Point a = new Point(Vato.x + Math.round(Vato.width / 2), Vato.y + +Math.round(Vato.height / 2));
-        Point b = new Point(x, y);
+        Point b = upperQuad() ? new Point(x, y) : new Point(x, y + 2 * ((Vato.y + Math.round(Vato.height / 2)) - y));
         Point c = new Point(x, Vato.y + +Math.round(Vato.height / 2));
-        double ab = Math.sqrt(Math.pow((a.x - b.x), 2) - Math.pow((a.y - b.y), 2));
-        double ac = Math.sqrt(Math.pow((a.x - c.x), 2) - Math.pow((a.y - c.y), 2));
+        double ab = Math.sqrt(Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2));
+        double ac = Math.sqrt(Math.pow((a.x - c.x), 2) + Math.pow((a.y - c.y), 2));
         angle = Math.acos(ac / ab);
         return angle;
+    }
+
+    public static boolean upperQuad() {
+        return y > Vato.y + +Math.round(Vato.height / 2);
+    }
+
+    public static boolean rightQuad() {
+        return x > Vato.x + Math.round(Vato.width / 2);
     }
 }

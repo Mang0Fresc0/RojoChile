@@ -16,16 +16,17 @@ public class Bala {
 
     double x;
     double y;
-    double xa;
-    double ya;
+    double xd;
+    double yd;
     int diameter = 5;
+    int speed = 3;
 
     public Bala(int x, int y) {
         this.x = x;
         this.y = y;
         double angle = FakeMouse.getAngle();
-        xa = Math.cos(angle);
-        ya = Math.sin(angle);
+        xd = FakeMouse.rightQuad() ? Math.cos(angle) : -Math.cos(angle);
+        yd = FakeMouse.upperQuad() ? Math.sin(angle) : -Math.sin(angle);
     }
 
     public void pintar(Graphics2D g) {
@@ -34,7 +35,7 @@ public class Bala {
     }
 
     public void movimiento() {
-        x += xa;
-        y += ya;
+        x += xd * speed;
+        y += yd * speed;
     }
 }
