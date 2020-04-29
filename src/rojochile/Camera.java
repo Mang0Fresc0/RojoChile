@@ -64,8 +64,8 @@ public class Camera {
         loadArea.y += loadArea.y + lya > -Math.round(shot.height / 8) && loadArea.y + loadArea.height + lya < RojoChile.mapHeight + Math.round(shot.height / 8) && yLAAlign ? lya : 0;
         if (Vato.bouncing) {
             Vato.bouncing = false;
-            shot.x += shot.x + lxa > 0 && shot.x + shot.width + lxa < RojoChile.mapWidth && xAlign ? lxa : 0;
-            shot.y += shot.y + lya > 0 && shot.y + shot.height + lya < RojoChile.mapHeight && yAlign ? lya : 0;
+            shot.x += shot.x + lxa > 0 && shot.x + shot.width + lxa < RojoChile.mapWidth? lxa : 0;
+            shot.y += shot.y + lya > 0 && shot.y + shot.height + lya < RojoChile.mapHeight? lya : 0;
             Vato.xa = 0;
             Vato.ya = 0;
         }
