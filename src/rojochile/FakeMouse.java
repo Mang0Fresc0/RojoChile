@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 public class FakeMouse {
 
@@ -65,10 +66,20 @@ public class FakeMouse {
     }
 
     public static boolean upperQuad() {
-        return y > Vato.y + +Math.round(Vato.height / 2);
+        return y > Vato.y + Math.round(Vato.height / 2);
     }
 
     public static boolean rightQuad() {
         return x > Vato.x + Math.round(Vato.width / 2);
+    }
+
+    public static boolean upperQuadDev() {
+        Random r = new Random();
+        return y + r.nextInt(50) - r.nextInt(50) > Vato.y + Math.round(Vato.height / 2);
+    }
+
+    public static boolean rightQuadDev() {
+        Random r = new Random();
+        return x + r.nextInt(50) - r.nextInt(50) > Vato.x + Math.round(Vato.width / 2);
     }
 }

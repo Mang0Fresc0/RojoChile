@@ -22,7 +22,7 @@ public class Bala {
     double prevY;
     double xd;
     double yd;
-    int strength = 100;
+    int strength;
     int diameter = 5;
     int speed = 30;
 
@@ -32,10 +32,24 @@ public class Bala {
         double angle = FakeMouse.getAngle();
         xd = FakeMouse.rightQuad() ? Math.cos(angle) : -Math.cos(angle);
         yd = FakeMouse.upperQuad() ? Math.sin(angle) : -Math.sin(angle);
+        strength = 100;
+    }
+
+    public Bala(int x, int y, int angleDev) {
+        this.x = x;
+        this.y = y;
+        double angle = FakeMouse.getAngle() + (double) angleDev / 1000;
+        xd = FakeMouse.rightQuadDev() ? Math.cos(angle) : -Math.cos(angle);
+        yd = FakeMouse.upperQuadDev() ? Math.sin(angle) : -Math.sin(angle);
+        strength = 10;
     }
 
     public void pintar(Graphics2D g) {
-        g.setColor(Color.WHITE);
+        if (strength == 100) {
+            g.setColor(Color.WHITE);
+        } else {
+            g.setColor(Color.RED);
+        }
         g.fillOval((int) Math.round(x - Camera.shot.x - diameter / 2), (int) Math.round(y - Camera.shot.y - diameter / 2), diameter, diameter);
     }
 

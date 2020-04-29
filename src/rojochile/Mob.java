@@ -30,7 +30,8 @@ public class Mob {
     boolean aggro;
     boolean mAtk = false;
     boolean rAtk = false;
-    boolean dead = false;
+    boolean inactive = false;
+    int inactCount = 0;
     Random r = new Random();
 
     public Mob(int x, int y) {
@@ -39,7 +40,7 @@ public class Mob {
     }
 
     public void move() {
-        if (!dead) {
+        if (!inactive) {
             pos = new Rectangle(x, y, width, height);
             Checkhurt();
             if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
@@ -69,6 +70,13 @@ public class Mob {
             } else {
                 aggro = false;
             }
+        } else {
+            if (inactCount == 0) {
+                inactive = false;
+                hp = 1000;
+            } else {
+                inactCount--;
+            }
         }
     }
 
@@ -78,7 +86,7 @@ public class Mob {
         } else {
             g.setColor(Color.white);
         }
-        if (dead) {
+        if (inactive) {
             g.setColor(Color.red);
         }
         g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
@@ -105,7 +113,8 @@ public class Mob {
             }
         }
         if (hp <= 0) {
-            dead = true;
+            inactive = true;
+            inactCount = 300;
         }
     }
 
@@ -113,6 +122,7 @@ public class Mob {
         int n = r.nextInt(100);
         if (!mAtk) {
             meleeAtk = new Rectangle(x - meleeRange, y - meleeRange, 2 * meleeRange, 2 * meleeRange);
+            orient();
             if (meleeAtk.intersects(Vato.getPos()) && n + hostility > 80) {
                 mAtk = true;
             } else if (n < 5) {
@@ -154,6 +164,12 @@ public class Mob {
             windUp += agility;
         }
         if (windUp >= STDATKT && meleeAtk.intersects(Vato.getPos())) {
+            if (Vato.parrying) {
+                parried();
+            } else if (Vato.vulnerable) {
+                assail();
+            }
+        } else {
             Vato.hurt(strength);
             Vato.bounce(kback, xOrient, yOrient);
         }
@@ -161,6 +177,17 @@ public class Mob {
 
     public void ranged() {
 
+    }
+
+    public void assail() {
+        Vato.hurt(strength * 2);
+        Vato.bounce(kback, xOrient, yOrient);
+        Vato.vulnerable = false;
+    }
+
+    public void parried() {
+        Vato.energy += strength;
+        Vato.parrying = false;
     }
 
     public Rectangle getPos() {

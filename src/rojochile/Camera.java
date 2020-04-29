@@ -17,7 +17,7 @@ public class Camera {
         shot = new Rectangle(Level.startPosX, Level.startPosY, w, h);
         stillShot = (Rectangle) shot.clone();
         loadArea = new Rectangle(Math.round(-w / 8) + shot.x, Math.round(-h / 8) + shot.y, Math.round(w * 5 / 4), Math.round(h * 5 / 4));
-        centerShot = new Point((int)shot.getCenterX(), (int) shot.getCenterY());
+        centerShot = new Point((int) shot.getCenterX(), (int) shot.getCenterY());
         this.map = map;
     }
 
@@ -62,15 +62,17 @@ public class Camera {
         stillShot.y += stillShot.y + lya > 0 && stillShot.y + stillShot.height + lya < RojoChile.mapHeight && yAlign ? lya : 0;
         loadArea.x += loadArea.x + lxa > -Math.round(shot.width / 8) && loadArea.x + loadArea.width + lxa < RojoChile.mapWidth + Math.round(shot.width / 8) && xLAAlign ? lxa : 0;
         loadArea.y += loadArea.y + lya > -Math.round(shot.height / 8) && loadArea.y + loadArea.height + lya < RojoChile.mapHeight + Math.round(shot.height / 8) && yLAAlign ? lya : 0;
-        moveShot();
-        shot.x += xa;
-        shot.y += ya;
         if (Vato.bouncing) {
             Vato.bouncing = false;
+            shot.x += shot.x + lxa > 0 && shot.x + shot.width + lxa < RojoChile.mapWidth && xAlign ? lxa : 0;
+            shot.y += shot.y + lya > 0 && shot.y + shot.height + lya < RojoChile.mapHeight && yAlign ? lya : 0;
             Vato.xa = 0;
             Vato.ya = 0;
         }
-        centerShot = new Point((int)shot.getCenterX(), (int) shot.getCenterY());
+        moveShot();
+        shot.x += xa;
+        shot.y += ya;
+        centerShot = new Point((int) shot.getCenterX(), (int) shot.getCenterY());
     }
 
     public void moveShot() {

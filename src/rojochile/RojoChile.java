@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class RojoChile extends JPanel {
@@ -97,10 +98,11 @@ public class RojoChile extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    Vato.shoot();
+                } else if (SwingUtilities.isRightMouseButton(e)) {
+                    Vato.specialShot();
+                }
             }
 
             @Override
