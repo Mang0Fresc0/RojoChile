@@ -21,6 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import java.applet.AudioClip;
+
 
 public class RojoChile extends JPanel {
 
@@ -182,7 +184,12 @@ public class RojoChile extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(W, H);
     }
-
+    
+    public  void musica (){
+    AudioClip MusiFondo;
+    MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.mp3"));
+    MusiFondo.play();
+}
     public static void main(String[] args) throws IOException, InterruptedException {
         JFrame frame = new JFrame("RojoChile");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -197,5 +204,7 @@ public class RojoChile extends JPanel {
         borderSize = (int) Math.round((bounds.getWidth() - W) / 2);
         wideBorderSize = bounds.height - H - borderSize;
         frame.setVisible(true);
+        
+        
     }
 }

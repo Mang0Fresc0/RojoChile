@@ -109,9 +109,15 @@ public class Vato {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(Color.WHITE);
+
         for (Bala i : balas) {
             i.pintar(g);
         }
+
+        for (Bala i:balas) {
+        i.pintar(g);   
+    } 
+
     }
 
     public void keyReleased(KeyEvent e) {
