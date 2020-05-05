@@ -176,18 +176,19 @@ public class Mob {
     }
 
     public void ranged() {
-
     }
 
     public void assail() {
         Vato.hurt(strength * 2);
         Vato.bounce(kback, xOrient, yOrient);
         Vato.vulnerable = false;
+        Vato.vulCount = 0;
     }
 
     public void parried() {
         Vato.energy += strength;
         Vato.parrying = false;
+        Vato.parryCount = 0;
     }
 
     public Rectangle getPos() {

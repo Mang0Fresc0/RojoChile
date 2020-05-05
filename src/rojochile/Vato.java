@@ -25,6 +25,8 @@ public class Vato {
     static boolean bouncing = false;
     static boolean parrying = false;
     static boolean vulnerable = false;
+    static int parryCount = 0;
+    static int vulCount = 0;
     static ArrayList<Bala> balas = new ArrayList<>();
 
     public Vato() {
@@ -52,6 +54,10 @@ public class Vato {
     }
 
     public void parry() {
+        if (!parrying && !vulnerable) {
+            parrying = true;
+            parryCount = 10;
+        }
     }
 
     public void move() {
@@ -67,11 +73,25 @@ public class Vato {
         if (delay != 0) {
             delay--;
         }
-        if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
+        if (parrying || vulnerable) {
+            if (parryCount > 0) {
+                parryCount--;
+            } else if (!vulnerable) {
+                parrying = false;
+                vulnerable = true;
+                vulCount = 60;
+            }
+            if (vulCount > 0) {
+                vulCount--;
+            } else {
+                vulnerable = false;
+            }
+        }
+        if (x + xa > 0 && x + xa < RojoChile.mapWidth - width && x + xa > Camera.loadArea.x && x + xa < Camera.loadArea.x + Camera.loadArea.width - width) {
             x += xa;
             FakeMouse.x += xa;
         }
-        if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
+        if (y + height + ya < RojoChile.mapHeight && y + ya > Camera.loadArea.y && y + height + ya < Camera.loadArea.y + Camera.loadArea.height && y + ya > Camera.loadArea.y) {
             y += ya;
             FakeMouse.y += ya;
         }
@@ -114,9 +134,9 @@ public class Vato {
             i.pintar(g);
         }
 
-        for (Bala i:balas) {
-        i.pintar(g);   
-    } 
+        for (Bala i : balas) {
+            i.pintar(g);
+        }
 
     }
 
@@ -141,7 +161,7 @@ public class Vato {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (!bouncing && !FakeMouse.visible) {
+        if (!bouncing && !FakeMouse.visible && !vulnerable && !parrying) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = -4;
             }
@@ -154,6 +174,9 @@ public class Vato {
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 4;
             }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_E && !RojoChile.paused) {
+            parry();
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT && xa == 0 && ya == 0) {
             FakeMouse.visible = true;
