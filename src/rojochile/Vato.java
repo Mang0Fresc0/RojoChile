@@ -91,7 +91,7 @@ public class Vato {
             x += xa;
             FakeMouse.x += xa;
         }
-        if (y + height + ya < RojoChile.mapHeight && y + ya > Camera.loadArea.y && y + height + ya < Camera.loadArea.y + Camera.loadArea.height && y + ya > Camera.loadArea.y) {
+        if (y + ya > 0 && y + height + ya < RojoChile.mapHeight && y + ya > Camera.loadArea.y && y + height + ya < Camera.loadArea.y + Camera.loadArea.height && y + ya > Camera.loadArea.y) {
             y += ya;
             FakeMouse.y += ya;
         }
@@ -189,8 +189,8 @@ public class Vato {
 
     public static void bounce(int b, int xo, int yo) {
         bouncing = true;
-        xa += b * xo;
-        ya += b * yo;
+        xa = b * xo;
+        ya = b * yo;
     }
 
     public static void hurt(int dmg) {
