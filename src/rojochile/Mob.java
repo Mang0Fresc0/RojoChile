@@ -43,8 +43,9 @@ public class Mob {
         this.x = x;
         this.y = y;
     }
-    
-    public Mob(){}
+
+    public Mob() {
+    }
 
     public void move() {
         if (!inactive) {
@@ -88,16 +89,17 @@ public class Mob {
         if (!inactive) {
             Mob = move;
             g.drawImage(Mob, x - Camera.shot.x, y - Camera.shot.y, null);
-        }
-        if (Atk && windUp < STDATKT) {
-            g.setColor(Color.orange);
-            g.draw(meleeAtkMir);
-        }
-        if (Atk && windUp >= STDATKT) {
-            g.setColor(Color.red);
-            g.draw(meleeAtkMir);
-            Atk = false;
-            windUp = 0;
+
+            if (Atk && windUp < STDATKT) {
+                g.setColor(Color.orange);
+                g.draw(meleeAtkMir);
+            }
+            if (Atk && windUp >= STDATKT) {
+                g.setColor(Color.red);
+                g.draw(meleeAtkMir);
+                Atk = false;
+                windUp = 0;
+            }
         }
     }
 
@@ -108,11 +110,9 @@ public class Mob {
 
     public void Checkhurt() {
         for (Bala i : Vato.balas) {
-            if (i != null) {
-                if (i.intersects(pos)) {
-                    hp -= i.strength;
-                    i = null;
-                }
+            if (i.intersects(pos)) {
+                hp -= i.strength;
+                Vato.toDispose.add(i);
             }
         }
         if (hp <= 0) {

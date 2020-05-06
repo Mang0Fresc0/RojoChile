@@ -23,6 +23,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.applet.AudioClip;
 import java.awt.Window;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class RojoChile extends JPanel {
@@ -45,6 +47,7 @@ public class RojoChile extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                spawn();
                 move();
             } catch (IOException ex) {
                 Logger.getLogger(RojoChile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -52,15 +55,18 @@ public class RojoChile extends JPanel {
             repaint();
         }
     });
+    Random r = new Random();
     Level level = new Level(lvl);
     Map map;
     Camera camera;
     Vato vato;
     FakeMouse fakeMouse;
     Robot rob;
-    //Hay que quitar este y todas las referencia a él después
-    Mob test;
-    Mob test2;
+    Mob mob1;
+    Mob mob2;
+    int cdToSpawn = 300;
+    ArrayList<Cacodrone> cDrones = new ArrayList<>();
+    static ArrayList<Cacodrone> toDispose = new ArrayList<>();
 
     public RojoChile() throws IOException {
         W = Level.width;
@@ -74,8 +80,8 @@ public class RojoChile extends JPanel {
         vato = new Vato();
         centerMouse();
         fakeMouse = new FakeMouse();
-        test = new Mob(500, 500);
-        test2 = new Mob(800, 500);
+        mob1 = new Mob(500, 500);
+        mob2 = new Mob(800, 500);
         timer.setInitialDelay(0);
 
         addKeyListener(new KeyListener() {
@@ -161,13 +167,43 @@ public class RojoChile extends JPanel {
         if (!paused) {
             vato.move();
             camera.move();
-            test.move();
-            test2.move();
+            mob1.move();
+            mob2.move();
+            for (Cacodrone i : cDrones) {
+                i.move();
+                if (i.inactive) {
+                    toDispose.add(i);
+                }
+            }
+        }
+    }
+
+    public void dispose() {
+        for (Cacodrone i : toDispose) {
+            cDrones.remove(i);
+        }
+        toDispose.clear();
+    }
+
+    public void spawn() {
+        if (cdToSpawn > 0) {
+            cdToSpawn--;
+        } else {
+            int x, y;
+            if (r.nextBoolean()) {
+                x = r.nextBoolean() ? 0 : mapWidth - 64;
+                y = r.nextInt(mapHeight - 128) + 64;
+            } else {
+                y = r.nextBoolean() ? 0 : mapHeight - 64;
+                x = r.nextInt(mapWidth - 128) + 64;
+            }
+            cDrones.add(new Cacodrone(x, y));
+            dispose();
+            cdToSpawn = 300;
         }
     }
 
     public static void gameOver() throws IOException {
-
         if (!GO) {
             GO = true;
             e = SwingUtilities.getWindowAncestor(b);
@@ -177,7 +213,6 @@ public class RojoChile extends JPanel {
             MenuMuerte a = new MenuMuerte();
             a.setVisible(true);
         }
-
     }
 
     public void centerMouse() {
@@ -193,8 +228,11 @@ public class RojoChile extends JPanel {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         map.drawTiles(g2d);
-        test.paint(g2d);
-        test2.paint(g2d);
+        mob1.paint(g2d);
+        mob2.paint(g2d);
+        for (Cacodrone i : cDrones) {
+            i.paint(g2d);
+        }
         vato.paint(g2d);
         fakeMouse.paint(g2d);
     }

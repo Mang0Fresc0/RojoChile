@@ -15,19 +15,18 @@ public class Vato {
 
     static int animation = 0;
 
-    
     Image backmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/backmove.gif")).getImage();
     Image frontmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/frontmove.gif")).getImage();
     Image rightmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/rightmove.gif")).getImage();
     Image leftmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/leftmove.gif")).getImage();
-    
+
     Image backidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/backidol 64.png")).getImage();
     Image frontidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/frontidol 64.png")).getImage();
     Image rightidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/rightidol 64.png")).getImage();
     Image leftidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/leftidol 64.png")).getImage();
 
     Image recharge = new ImageIcon(this.getClass().getResource("Animaciones/Main/Attack/mainattack 64.gif")).getImage();
-    
+
     //                           0         1          2           3         4         5         6           7         8
     Image[] animationArray = {backidle, leftidle, frontidle, rightidle, backmove, leftmove, frontmove, rightmove, recharge};
     Image Player = recharge;
@@ -49,8 +48,8 @@ public class Vato {
     static boolean vulnerable = false;
     static int parryCount = 0;
     static int vulCount = 0;
+    static ArrayList<Bala> toDispose = new ArrayList<>();
     static ArrayList<Bala> balas = new ArrayList<>();
-   
 
     public Vato() {
         x = Math.round(Camera.centerShot.x - width / 2);
@@ -83,7 +82,7 @@ public class Vato {
         }
     }
 
-    public void move() throws IOException   {
+    public void move() throws IOException {
         if (shooting) {
             if (delay > 0) {
                 delay--;
@@ -120,7 +119,7 @@ public class Vato {
         }
 
         if (hp < 1) {
-           
+
             RojoChile.gameOver();
         }
         if (invCount > 0) {
@@ -130,19 +129,18 @@ public class Vato {
             inv = false;
         }
         for (Bala i : balas) {
-            if (i != null) {
-                i.movimiento();
-                if (!Camera.loadArea.intersects(i.x, i.y, i.diameter, i.diameter)) {
-                    i = null;
-                }
+            i.movimiento();
+            if (!Camera.loadArea.intersects(i.x, i.y, i.diameter, i.diameter)) {
+                toDispose.add(i);
             }
         }
+        dispose();
     }
 
     public void paint(Graphics2D g) {
         g.setColor(Color.red);
         g.fillRect(10, 10, hp, 5);
-        g.setColor(new Color(242,108,241));
+        g.setColor(new Color(242, 108, 241));
         g.fillRect(10, 25, energy, 5);
         g.setColor(Color.black);
         g.drawRect(10, 10, hp, 5);
@@ -152,40 +150,43 @@ public class Vato {
         }
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(Color.WHITE);
-
         for (Bala i : balas) {
             i.pintar(g);
         }
-
-        for (Bala i : balas) {
-            i.pintar(g);
-        }
-
     }
 
+    public void dispose() {
+        for (Bala i : toDispose) {
+            balas.remove(i);
+        }
+        toDispose.clear();
+    }
 
     public void keyReleased(KeyEvent e) {
         if (!bouncing) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = 0;
-                if(ya == 0)
-                Player = leftidle;
+                if (ya == 0) {
+                    Player = leftidle;
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 xa = 0;
-                if (ya == 0)
-                Player = rightidle;
+                if (ya == 0) {
+                    Player = rightidle;
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 ya = 0;
-                if (xa == 0)
-                Player = backidle;
+                if (xa == 0) {
+                    Player = backidle;
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 0;
-                if (xa == 0)
-                Player = frontidle;
+                if (xa == 0) {
+                    Player = frontidle;
+                }
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT && !RojoChile.paused) {
@@ -198,23 +199,27 @@ public class Vato {
         if (!bouncing && !FakeMouse.visible && !vulnerable && !parrying) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = -4;
-                if (ya == 0)
-                Player = leftmove;
+                if (ya == 0) {
+                    Player = leftmove;
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 xa = 4;
-                if (ya == 0)
-                Player = rightmove;
+                if (ya == 0) {
+                    Player = rightmove;
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 ya = -4;
-                if (xa == 0)
-                Player = backmove;
+                if (xa == 0) {
+                    Player = backmove;
+                }
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 4;
-                if (xa == 0)
-                Player = frontmove;
+                if (xa == 0) {
+                    Player = frontmove;
+                }
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_E && !RojoChile.paused) {
@@ -228,7 +233,7 @@ public class Vato {
             parry();
         }
     }
-        
+
     public static void bounce(int b, int xo, int yo) {
         bouncing = true;
         xa = b * xo;
