@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.applet.AudioClip;
+import java.awt.Window;
+import java.util.logging.Logger;
 
 
 public class RojoChile extends JPanel {
@@ -37,11 +39,15 @@ public class RojoChile extends JPanel {
     public static Rectangle bounds;
     static int wideBorderSize;
     static int borderSize;
+    static Window e;
+    static RojoChile b;
+    static boolean GO = false;
     Timer timer = new Timer(17, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            move();
-            repaint();
+            
+        move();
+        repaint();
         }
     });
     Level level = new Level(lvl);
@@ -54,7 +60,7 @@ public class RojoChile extends JPanel {
     Mob test;
     Mob test2;
 
-    public RojoChile() throws IOException {
+    public RojoChile() throws IOException  {
         W = Level.width;
         H = Level.height;
         centerW = Math.round(W / 2);
@@ -147,7 +153,7 @@ public class RojoChile extends JPanel {
         timer.start();
     }
 
-    public void move() {
+    public void move()  {
         if (!paused) {
             vato.move();
             camera.move();
@@ -156,9 +162,18 @@ public class RojoChile extends JPanel {
         }
     }
 
-    public static void gameOver() {
-        //Hay que agregar pantalla de fin del juego o algo
-        System.exit(ABORT);
+    public static void gameOver()  {
+    
+    if(!GO){ 
+    GO = true;
+    e = SwingUtilities.getWindowAncestor(b);
+    e.setVisible(false);
+    e.dispose();
+    MenuMuerte a = new MenuMuerte();
+    a.setVisible(true);
+    }
+        
+      
     }
 
     public void centerMouse() {
@@ -185,18 +200,21 @@ public class RojoChile extends JPanel {
         return new Dimension(W, H);
     }
     
-    public  void musica (){
+    public void musica (){
     AudioClip MusiFondo;
     MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.mp3"));
     MusiFondo.play();
+    
 }
     public static void main(String[] args) throws IOException, InterruptedException {
         JFrame frame = new JFrame("RojoChile");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-                new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
+        new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
         frame.getContentPane().setCursor(blankCursor);
         RojoChile game = new RojoChile();
+        b = game;
+        game.musica();
         frame.add(game);
         frame.setResizable(false);
         frame.pack();
@@ -204,6 +222,7 @@ public class RojoChile extends JPanel {
         borderSize = (int) Math.round((bounds.getWidth() - W) / 2);
         wideBorderSize = bounds.height - H - borderSize;
         frame.setVisible(true);
+        
         
         
     }
