@@ -46,7 +46,11 @@ public class RojoChile extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             
-        move();
+            try {
+                move();
+            } catch (IOException ex) {
+                Logger.getLogger(RojoChile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            }
         repaint();
         }
     });
@@ -153,7 +157,7 @@ public class RojoChile extends JPanel {
         timer.start();
     }
 
-    public void move()  {
+    public void move() throws IOException  {
         if (!paused) {
             vato.move();
             camera.move();
@@ -162,7 +166,7 @@ public class RojoChile extends JPanel {
         }
     }
 
-    public static void gameOver()  {
+    public static void gameOver() throws IOException  {
     
     if(!GO){ 
     GO = true;
@@ -203,7 +207,7 @@ public class RojoChile extends JPanel {
     public void musica (){
     AudioClip MusiFondo;
     MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.mp3"));
-    MusiFondo.play();
+    MusiFondo.loop();
     
 }
     public static void main(String[] args) throws IOException, InterruptedException {

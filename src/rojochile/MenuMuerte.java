@@ -5,9 +5,13 @@
  */
 package rojochile;
 
+import java.applet.AudioClip;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import static rojochile.Map.toCompatibleImage;
 
 /**
  *
@@ -18,10 +22,16 @@ public class MenuMuerte extends javax.swing.JFrame {
     /**
      * Creates new form TeMoriste
      */
-    public MenuMuerte() {
+    public MenuMuerte() throws IOException {
         initComponents();
+        Musica.setIcon(new javax.swing.ImageIcon("Resources/titulos/bocina2.jpg"));
+        Fondo.setIcon(new javax.swing.ImageIcon("Resources/titulos/fondomenu.png"));
+        jLabel2.setIcon(new javax.swing.ImageIcon("Resources/titulos/Moriste.png"));
+        Salir.setIcon(new javax.swing.ImageIcon("Resources/titulos/Salir.png"));
+        VolveralMenu.setIcon(new javax.swing.ImageIcon("Resources/titulos/VolveralMenu.png"));
+        
+        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,90 +41,59 @@ public class MenuMuerte extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Salir = new javax.swing.JButton();
-        VolveralMenu = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        Reiniciar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        Salir = new javax.swing.JLabel();
+        VolveralMenu = new javax.swing.JLabel();
+        Musica = new javax.swing.JLabel();
+        Fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, -1, -1));
 
-        Salir.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        Salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rojochile/Salir.png"))); // NOI18N
         Salir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SalirMouseClicked(evt);
             }
         });
-        getContentPane().add(Salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 290, 80));
+        getContentPane().add(Salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 370, 110));
 
-        VolveralMenu.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        VolveralMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rojochile/VolveralMenu.png"))); // NOI18N
-        VolveralMenu.setActionCommand("");
         VolveralMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 VolveralMenuMouseClicked(evt);
             }
         });
-        VolveralMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VolveralMenuActionPerformed(evt);
-            }
-        });
-        getContentPane().add(VolveralMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 560, 610, 80));
+        getContentPane().add(VolveralMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, 610, 110));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rojochile/cooltext356476022315577.png"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, -1, -1));
-
-        Reiniciar.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        Reiniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rojochile/Reiniciar.png"))); // NOI18N
-        Reiniciar.addMouseListener(new java.awt.event.MouseAdapter() {
+        Musica.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ReiniciarMouseClicked(evt);
+                MusicaMouseClicked(evt);
             }
         });
-        Reiniciar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ReiniciarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(Reiniciar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 360, 80));
+        getContentPane().add(Musica, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, 260, 170));
 
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rojochile/fondo 2.jpg"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1030, 700));
+        Fondo.setForeground(new java.awt.Color(51, 51, 51));
+        getContentPane().add(Fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, -20, 1030, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void VolveralMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolveralMenuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_VolveralMenuActionPerformed
-
-    private void ReiniciarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ReiniciarMouseClicked
-       this.setVisible(false);
-        try {
-            RojoChile.main(null);
-        } catch (IOException ex) {
-            Logger.getLogger(MenuMuerte.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MenuMuerte.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_ReiniciarMouseClicked
-
-    private void ReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReiniciarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ReiniciarActionPerformed
-
     private void SalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseClicked
-       dispose();
+        dispose();
     }//GEN-LAST:event_SalirMouseClicked
 
     private void VolveralMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VolveralMenuMouseClicked
-       
+        
     }//GEN-LAST:event_VolveralMenuMouseClicked
 
+    private void MusicaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MusicaMouseClicked
+    AudioClip MusiFondo;
+    MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
+    MusiFondo.play();
+    }//GEN-LAST:event_MusicaMouseClicked
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -146,16 +125,20 @@ public class MenuMuerte extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuMuerte().setVisible(true);
+                try {
+                    new MenuMuerte().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(MenuMuerte.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Reiniciar;
-    private javax.swing.JButton Salir;
-    private javax.swing.JButton VolveralMenu;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel Fondo;
+    private javax.swing.JLabel Musica;
+    private javax.swing.JLabel Salir;
+    private javax.swing.JLabel VolveralMenu;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

@@ -62,7 +62,7 @@ public class Vato {
         }
     }
 
-    public void move()   {
+    public void move() throws IOException   {
         if (shooting) {
             if (delay > 0) {
                 delay--;
