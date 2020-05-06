@@ -27,7 +27,6 @@ public class Mob {
     int[] rangedRange = {0, 0};
     Rectangle meleeAtk;
     Rectangle pos;
-    boolean aggro;
     boolean mAtk = false;
     boolean rAtk = false;
     boolean inactive = false;
@@ -55,9 +54,6 @@ public class Mob {
             if (rAtk) {
                 ranged();
             }
-            if (pos.intersects(Camera.shot)) {
-                aggro = true;
-            }
             if (pos.intersects(Vato.getPos())) {
                 collision();
             }
@@ -65,10 +61,8 @@ public class Mob {
                 closeAction();
             } else if (pos.intersects(Camera.stillShot)) {
                 midAction();
-            } else if (pos.intersects(Camera.loadArea)) {
-                farAction();
             } else {
-                aggro = false;
+                farAction();
             }
         } else {
             if (inactCount == 0) {
@@ -108,21 +102,27 @@ public class Mob {
 
     public void Checkhurt() {
         for (Bala i : Vato.balas) {
-            if (i.intersects(pos)) {
-                hp -= i.strength;
+            if (i != null) {
+                if (i.intersects(pos)) {
+                    hp -= i.strength;
+                    i = null;
+                }
             }
         }
         if (hp <= 0) {
-            inactive = true;
-            inactCount = 300;
+            die();
         }
+    }
+
+    public void die() {
+        inactive = true;
+        inactCount = 300;
     }
 
     public void closeAction() {
         int n = r.nextInt(100);
         if (!mAtk) {
             meleeAtk = new Rectangle(x - meleeRange, y - meleeRange, 2 * meleeRange, 2 * meleeRange);
-            orient();
             if (meleeAtk.intersects(Vato.getPos()) && n + hostility > 80) {
                 mAtk = true;
             } else if (n < 5) {
@@ -148,15 +148,15 @@ public class Mob {
     }
 
     public void midAction() {
+        orient();
         xa = xOrient * speed;
         ya = yOrient * speed;
     }
 
     public void farAction() {
-        if (aggro) {
-            xa = xOrient * speed;
-            ya = yOrient * speed;
-        }
+        orient();
+        xa = xOrient * speed;
+        ya = yOrient * speed;
     }
 
     public void melee() {
