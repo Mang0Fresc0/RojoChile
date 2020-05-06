@@ -28,7 +28,6 @@ public class FakeMouse {
     }
 
     public void move(MouseEvent e) {
-        Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         xa = e.getXOnScreen() - prev.x;
         ya = e.getYOnScreen() - prev.getLocation().y;
         if (!RojoChile.paused) {
@@ -47,7 +46,7 @@ public class FakeMouse {
 
     public void paint(Graphics2D g) {
         if (visible) {
-            g.setColor(Color.white);
+            g.setColor(new Color(252,234,40));
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g.fillOval(x - Camera.shot.x - Math.round(diameter / 2), y - Camera.shot.y - Math.round(diameter / 2), diameter, diameter);

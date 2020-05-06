@@ -6,37 +6,35 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Random;
 import javax.swing.ImageIcon;
-import javax.swing.Timer;
 
 public class Mob {
 
     Image move = new ImageIcon(this.getClass().getResource("Animaciones/Default/defaultmove.gif")).getImage();
     Image dead = new ImageIcon(this.getClass().getResource("Animaciones/Default/defaultdead.gif")).getImage();
-    
+
     Image Mob;
-    
-    int x;
-    int y;
+
+    int x = 0;
+    int y = 0;
     int xa = 0;
     int ya = 0;
-    final int STDATKT = 100;
+    final int STDATKT = 150;
     int xOrient = 1;
     int yOrient = 1;
-    int height = 50;
-    int width = 30;
+    int height = 64;
+    int width = 64;
     int strength = 100;
     int hostility = 20;
     int agility = 10;
     int speed = 2;
     int windUp = 0;
-    int kback = 24; //este tiene que ser un múltiplo de cuatro, o puede que la cámara se rompa.
+    int kback = 48; //este tiene que ser un múltiplo de cuatro, o puede que la cámara se rompa.
     int hp = 1000;
     int meleeRange = 100;
-    int[] rangedRange = {0, 0};
     Rectangle meleeAtk;
+    Rectangle meleeAtkMir;
     Rectangle pos;
-    boolean mAtk = false;
-    boolean rAtk = false;
+    boolean Atk = false;
     boolean inactive = false;
     int inactCount = 0;
     Random r = new Random();
@@ -45,6 +43,8 @@ public class Mob {
         this.x = x;
         this.y = y;
     }
+    
+    public Mob(){}
 
     public void move() {
         if (!inactive) {
@@ -56,11 +56,8 @@ public class Mob {
             if (y + height + ya < RojoChile.mapHeight && y + ya > 0) {
                 y += ya;
             }
-            if (mAtk) {
-                melee();
-            }
-            if (rAtk) {
-                ranged();
+            if (Atk) {
+                attack();
             }
             if (pos.intersects(Vato.getPos())) {
                 collision();
@@ -83,28 +80,24 @@ public class Mob {
     }
 
     public void paint(Graphics2D g) {
-        if (!mAtk && !rAtk) {
-            g.setColor(Color.orange);
-        } else {
-            g.setColor(Color.white);
-        }
         if (inactive) {
             Mob = dead;
             g.drawImage(Mob, x - Camera.shot.x, y - Camera.shot.y, null);
         }
 
-        if (!inactive){
+        if (!inactive) {
             Mob = move;
             g.drawImage(Mob, x - Camera.shot.x, y - Camera.shot.y, null);
         }
-        if (mAtk && windUp >= STDATKT) {
-            g.setColor(Color.cyan);
-            g.drawRect(meleeAtk.x - Camera.shot.x, meleeAtk.y - Camera.shot.y, meleeAtk.width, meleeAtk.height);
-            mAtk = false;
-            windUp = 0;
+        if (Atk && windUp < STDATKT) {
+            g.setColor(Color.orange);
+            g.draw(meleeAtkMir);
         }
-        if (rAtk && windUp >= STDATKT) {
-
+        if (Atk && windUp >= STDATKT) {
+            g.setColor(Color.red);
+            g.draw(meleeAtkMir);
+            Atk = false;
+            windUp = 0;
         }
     }
 
@@ -134,10 +127,10 @@ public class Mob {
 
     public void closeAction() {
         int n = r.nextInt(100);
-        if (!mAtk) {
-            meleeAtk = new Rectangle(x - meleeRange, y - meleeRange, 2 * meleeRange, 2 * meleeRange);
+        if (!Atk) {
+            meleeAtk = new Rectangle(x - meleeRange, y - meleeRange, 2 * meleeRange + width, 2 * meleeRange + height);
             if (meleeAtk.intersects(Vato.getPos()) && n + hostility > 80) {
-                mAtk = true;
+                Atk = true;
             } else if (n < 5) {
                 xa = xOrient * speed;
             } else if (n >= 5 && n < 10) {
@@ -172,7 +165,9 @@ public class Mob {
         ya = yOrient * speed;
     }
 
-    public void melee() {
+    public void attack() {
+        meleeAtkMir = (Rectangle) meleeAtk.clone();
+        meleeAtkMir.translate(-Camera.shot.x, -Camera.shot.y);
         if (windUp < STDATKT) {
             windUp += agility;
         }
@@ -181,14 +176,11 @@ public class Mob {
                 parried();
             } else if (Vato.vulnerable) {
                 assail();
+            } else {
+                Vato.hurt(strength);
+                Vato.bounce(kback, xOrient, yOrient);
             }
-        } else {
-            Vato.hurt(strength);
-            Vato.bounce(kback, xOrient, yOrient);
         }
-    }
-
-    public void ranged() {
     }
 
     public void assail() {

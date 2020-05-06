@@ -36,8 +36,8 @@ public class Vato {
     static int y;
     static int xa = 0;
     static int ya = 0;
-    static int width = 30;
-    static int height = 50;
+    static int width = 55;
+    static int height = 64;
     static boolean inv = false;
     static int invCount = 0;
     static int hp = 500;
@@ -142,7 +142,7 @@ public class Vato {
     public void paint(Graphics2D g) {
         g.setColor(Color.red);
         g.fillRect(10, 10, hp, 5);
-        g.setColor(Color.cyan);
+        g.setColor(new Color(242,108,241));
         g.fillRect(10, 25, energy, 5);
         g.setColor(Color.black);
         g.drawRect(10, 10, hp, 5);

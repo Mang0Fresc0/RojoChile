@@ -25,7 +25,6 @@ import java.applet.AudioClip;
 import java.awt.Window;
 import java.util.logging.Logger;
 
-
 public class RojoChile extends JPanel {
 
     int lvl = 2;
@@ -45,13 +44,12 @@ public class RojoChile extends JPanel {
     Timer timer = new Timer(17, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
             try {
                 move();
             } catch (IOException ex) {
                 Logger.getLogger(RojoChile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-        repaint();
+            repaint();
         }
     });
     Level level = new Level(lvl);
@@ -64,7 +62,7 @@ public class RojoChile extends JPanel {
     Mob test;
     Mob test2;
 
-    public RojoChile() throws IOException  {
+    public RojoChile() throws IOException {
         W = Level.width;
         H = Level.height;
         centerW = Math.round(W / 2);
@@ -110,10 +108,12 @@ public class RojoChile extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    Vato.shoot();
-                } else if (SwingUtilities.isRightMouseButton(e)) {
-                    Vato.specialShot();
+                if (!paused) {
+                    if (SwingUtilities.isLeftMouseButton(e)) {
+                        Vato.shoot();
+                    } else if (SwingUtilities.isRightMouseButton(e)) {
+                        Vato.specialShot();
+                    }
                 }
             }
 
@@ -157,7 +157,7 @@ public class RojoChile extends JPanel {
         timer.start();
     }
 
-    public void move() throws IOException  {
+    public void move() throws IOException {
         if (!paused) {
             vato.move();
             camera.move();
@@ -166,19 +166,18 @@ public class RojoChile extends JPanel {
         }
     }
 
-    public static void gameOver() throws IOException  {
-    
-    if(!GO){ 
-    GO = true;
-    e = SwingUtilities.getWindowAncestor(b);
-    e.setVisible(false);
-    e.dispose();
-    b.nomusica();
-    MenuMuerte a = new MenuMuerte();
-    a.setVisible(true);
-    }
-        
-      
+    public static void gameOver() throws IOException {
+
+        if (!GO) {
+            GO = true;
+            e = SwingUtilities.getWindowAncestor(b);
+            e.setVisible(false);
+            e.dispose();
+            b.nomusica();
+            MenuMuerte a = new MenuMuerte();
+            a.setVisible(true);
+        }
+
     }
 
     public void centerMouse() {
@@ -194,9 +193,9 @@ public class RojoChile extends JPanel {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         map.drawTiles(g2d);
-        vato.paint(g2d);
         test.paint(g2d);
         test2.paint(g2d);
+        vato.paint(g2d);
         fakeMouse.paint(g2d);
     }
 
@@ -204,24 +203,24 @@ public class RojoChile extends JPanel {
     public Dimension getPreferredSize() {
         return new Dimension(W, H);
     }
-    
-    public void musica (){
+
+    public void musica() {
         AudioClip MusiFondo;
         MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
         MusiFondo.loop();
     }
-    
-    public void nomusica (){
+
+    public void nomusica() {
         AudioClip MusiFondo;
         MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
         MusiFondo.stop();
     }
-    
+
     public static void main(String[] args) throws IOException, InterruptedException {
         JFrame frame = new JFrame("RojoChile");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-        new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
+                new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
         frame.getContentPane().setCursor(blankCursor);
         RojoChile game = new RojoChile();
         b = game;
@@ -233,8 +232,6 @@ public class RojoChile extends JPanel {
         borderSize = (int) Math.round((bounds.getWidth() - W) / 2);
         wideBorderSize = bounds.height - H - borderSize;
         frame.setVisible(true);
-        
-        
-        
+
     }
 }

@@ -20,8 +20,8 @@ public class Bala {
     double y;
     double prevX;
     double prevY;
-    double xd;
-    double yd;
+    double dx;
+    double dy;
     int strength;
     int diameter = 5;
     int speed = 30;
@@ -30,8 +30,8 @@ public class Bala {
         this.x = x;
         this.y = y;
         double angle = FakeMouse.getAngle();
-        xd = FakeMouse.rightQuad() ? Math.cos(angle) : -Math.cos(angle);
-        yd = FakeMouse.upperQuad() ? Math.sin(angle) : -Math.sin(angle);
+        dx = FakeMouse.rightQuad() ? Math.cos(angle) : -Math.cos(angle);
+        dy = FakeMouse.upperQuad() ? Math.sin(angle) : -Math.sin(angle);
         strength = 100;
     }
 
@@ -39,14 +39,19 @@ public class Bala {
         this.x = x;
         this.y = y;
         double angle = FakeMouse.getAngle() + (double) angleDev / 1000;
-        xd = FakeMouse.rightQuadDev() ? Math.cos(angle) : -Math.cos(angle);
-        yd = FakeMouse.upperQuadDev() ? Math.sin(angle) : -Math.sin(angle);
+        dx = FakeMouse.rightQuadDev() ? Math.cos(angle) : -Math.cos(angle);
+        dy = FakeMouse.upperQuadDev() ? Math.sin(angle) : -Math.sin(angle);
         strength = 10;
+    }
+
+    public Bala(int x, int y, double angle) {
+        this.x = x;
+        this.y = y;
     }
 
     public void pintar(Graphics2D g) {
         if (strength == 100) {
-            g.setColor(Color.WHITE);
+            g.setColor(new Color(235, 5, 231));
         } else {
             g.setColor(Color.RED);
         }
@@ -56,8 +61,8 @@ public class Bala {
     public void movimiento() {
         prevX = x;
         prevY = y;
-        x += xd * speed;
-        y += yd * speed;
+        x += dx * speed;
+        y += dy * speed;
     }
 
     public boolean intersects(Rectangle target) {
