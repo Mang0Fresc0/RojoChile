@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,6 +29,7 @@ public class Vato {
     static int parryCount = 0;
     static int vulCount = 0;
     static ArrayList<Bala> balas = new ArrayList<>();
+   
 
     public Vato() {
         x = Math.round(Camera.centerShot.x - width / 2);
@@ -60,7 +62,7 @@ public class Vato {
         }
     }
 
-    public void move() {
+    public void move()   {
         if (shooting) {
             if (delay > 0) {
                 delay--;
@@ -97,6 +99,7 @@ public class Vato {
         }
 
         if (hp < 1) {
+           
             RojoChile.gameOver();
         }
         if (invCount > 0) {
