@@ -2,14 +2,35 @@ package rojochile;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.ImageIcon;
 
 public class Vato {
+
+    static int animation = 0;
+
+    
+    Image backmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/backmove.gif")).getImage();
+    Image frontmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/frontmove.gif")).getImage();
+    Image rightmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/rightmove.gif")).getImage();
+    Image leftmove = new ImageIcon(this.getClass().getResource("Animaciones/Main/Move/leftmove.gif")).getImage();
+    
+    Image backidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/backidol 64.png")).getImage();
+    Image frontidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/frontidol 64.png")).getImage();
+    Image rightidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/rightidol 64.png")).getImage();
+    Image leftidle = new ImageIcon(this.getClass().getResource("Animaciones/Main/Idol/leftidol 64.png")).getImage();
+
+    Image recharge = new ImageIcon(this.getClass().getResource("Animaciones/Main/Attack/mainattack 64.gif")).getImage();
+    
+    //                           0         1          2           3         4         5         6           7         8
+    Image[] animationArray = {backidle, leftidle, frontidle, rightidle, backmove, leftmove, frontmove, rightmove, recharge};
+    Image Player = recharge;
 
     static int x;
     static int y;
@@ -127,7 +148,7 @@ public class Vato {
         g.drawRect(10, 10, hp, 5);
         g.drawRect(10, 25, energy, 5);
         if (invCount % 2 == 0) {
-            g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
+            g.drawImage(Player, x - Camera.shot.x, y - Camera.shot.y, null);
         }
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -143,23 +164,33 @@ public class Vato {
 
     }
 
+
     public void keyReleased(KeyEvent e) {
         if (!bouncing) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = 0;
+                if(ya == 0)
+                Player = leftidle;
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 xa = 0;
+                if (ya == 0)
+                Player = rightidle;
             }
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 ya = 0;
+                if (xa == 0)
+                Player = backidle;
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 0;
+                if (xa == 0)
+                Player = frontidle;
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT && !RojoChile.paused) {
             FakeMouse.visible = false;
+            Player = rightidle;
         }
     }
 
@@ -167,15 +198,23 @@ public class Vato {
         if (!bouncing && !FakeMouse.visible && !vulnerable && !parrying) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = -4;
+                if (ya == 0)
+                Player = leftmove;
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 xa = 4;
+                if (ya == 0)
+                Player = rightmove;
             }
             if (e.getKeyCode() == KeyEvent.VK_W) {
                 ya = -4;
+                if (xa == 0)
+                Player = backmove;
             }
             if (e.getKeyCode() == KeyEvent.VK_S) {
                 ya = 4;
+                if (xa == 0)
+                Player = frontmove;
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_E && !RojoChile.paused) {
@@ -183,13 +222,13 @@ public class Vato {
         }
         if (e.getKeyCode() == KeyEvent.VK_SHIFT && xa == 0 && ya == 0) {
             FakeMouse.visible = true;
+            Player = recharge;
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             parry();
         }
-
     }
-
+        
     public static void bounce(int b, int xo, int yo) {
         bouncing = true;
         xa = b * xo;

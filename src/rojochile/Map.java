@@ -27,7 +27,7 @@ public class Map {
     }
 
     private void setMap(int x, int y) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("Resources/maps/" + Level.lvl + ".txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("Resources/maps/2.txt"));
         String line;
         for (int i = 0; i < y; i++) {
             line = reader.readLine();
@@ -55,10 +55,6 @@ public class Map {
     images.put("b1", toCompatibleImage(ImageIO.read(new File("Resources/tiles/b1.png"))));
     images.put("g1", toCompatibleImage(ImageIO.read(new File("Resources/tiles/g1.png"))));
     images.put("y1", toCompatibleImage(ImageIO.read(new File("Resources/tiles/y1.png"))));
-    images.put("s1", toCompatibleImage(ImageIO.read(new File("Resources/tiles/s1.png"))));
-    images.put("s2", toCompatibleImage(ImageIO.read(new File("Resources/tiles/s2.png"))));
-    images.put("s3", toCompatibleImage(ImageIO.read(new File("Resources/tiles/s3.png"))));
-    images.put("s4", toCompatibleImage(ImageIO.read(new File("Resources/tiles/s4.png"))));
     }
     
     //nada que ver aquí, solo código robado

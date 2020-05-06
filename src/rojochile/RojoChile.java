@@ -173,6 +173,7 @@ public class RojoChile extends JPanel {
     e = SwingUtilities.getWindowAncestor(b);
     e.setVisible(false);
     e.dispose();
+    b.nomusica();
     MenuMuerte a = new MenuMuerte();
     a.setVisible(true);
     }
@@ -205,11 +206,17 @@ public class RojoChile extends JPanel {
     }
     
     public void musica (){
-    AudioClip MusiFondo;
-    MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.mp3"));
-    MusiFondo.loop();
+        AudioClip MusiFondo;
+        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
+        MusiFondo.loop();
+    }
     
-}
+    public void nomusica (){
+        AudioClip MusiFondo;
+        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
+        MusiFondo.stop();
+    }
+    
     public static void main(String[] args) throws IOException, InterruptedException {
         JFrame frame = new JFrame("RojoChile");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -6,12 +6,9 @@
 package rojochile;
 
 import java.applet.AudioClip;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import static rojochile.Map.toCompatibleImage;
 
 /**
  *
@@ -29,8 +26,6 @@ public class MenuMuerte extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon("Resources/titulos/Moriste.png"));
         Salir.setIcon(new javax.swing.ImageIcon("Resources/titulos/Salir.png"));
         VolveralMenu.setIcon(new javax.swing.ImageIcon("Resources/titulos/VolveralMenu.png"));
-        
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,7 +74,8 @@ public class MenuMuerte extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SalirMouseClicked
-        dispose();
+        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_SalirMouseClicked
 
     private void VolveralMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VolveralMenuMouseClicked

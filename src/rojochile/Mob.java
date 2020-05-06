@@ -2,11 +2,19 @@ package rojochile;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Random;
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
 
 public class Mob {
 
+    Image move = new ImageIcon(this.getClass().getResource("Animaciones/Default/defaultmove.gif")).getImage();
+    Image dead = new ImageIcon(this.getClass().getResource("Animaciones/Default/defaultdead.gif")).getImage();
+    
+    Image Mob;
+    
     int x;
     int y;
     int xa = 0;
@@ -81,9 +89,14 @@ public class Mob {
             g.setColor(Color.white);
         }
         if (inactive) {
-            g.setColor(Color.red);
+            Mob = dead;
+            g.drawImage(Mob, x - Camera.shot.x, y - Camera.shot.y, null);
         }
-        g.fillRect(x - Camera.shot.x, y - Camera.shot.y, width, height);
+
+        if (!inactive){
+            Mob = move;
+            g.drawImage(Mob, x - Camera.shot.x, y - Camera.shot.y, null);
+        }
         if (mAtk && windUp >= STDATKT) {
             g.setColor(Color.cyan);
             g.drawRect(meleeAtk.x - Camera.shot.x, meleeAtk.y - Camera.shot.y, meleeAtk.width, meleeAtk.height);
