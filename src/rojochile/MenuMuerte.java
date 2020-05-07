@@ -22,7 +22,7 @@ public class MenuMuerte extends javax.swing.JFrame {
     public MenuMuerte() throws IOException {
         initComponents();
         //Musica.setIcon(new javax.swing.ImageIcon("Resources/titulos/bocina2.jpg"));
-        Fondo.setIcon(new javax.swing.ImageIcon("Resources/titulos/fondomenu.png"));
+        Fondo.setIcon(new javax.swing.ImageIcon("Resources/tiles/space.jpg"));
         jLabel2.setIcon(new javax.swing.ImageIcon("Resources/titulos/Moriste.png"));
         Salir.setIcon(new javax.swing.ImageIcon("Resources/titulos/Salir.png"));
         //VolveralMenu.setIcon(new javax.swing.ImageIcon("Resources/titulos/VolveralMenu.png"));
