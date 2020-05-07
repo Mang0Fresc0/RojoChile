@@ -23,9 +23,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.applet.AudioClip;
 import java.awt.Window;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 public class RojoChile extends JPanel {
 
@@ -40,6 +42,7 @@ public class RojoChile extends JPanel {
     public static Rectangle bounds;
     static int wideBorderSize;
     static int borderSize;
+    static BufferedImage bg;
     static Window e;
     static RojoChile b;
     static boolean GO = false;
@@ -226,6 +229,7 @@ public class RojoChile extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        g.drawImage(bg, 0, 0, null);
         Graphics2D g2d = (Graphics2D) g;
         map.drawTiles(g2d);
         mob1.paint(g2d);
@@ -265,6 +269,7 @@ public class RojoChile extends JPanel {
         game.musica();
         frame.add(game);
         frame.setResizable(false);
+        bg = ImageIO.read(new File("Resources/tiles/space.jpg"));
         frame.pack();
         bounds = frame.getBounds();
         borderSize = (int) Math.round((bounds.getWidth() - W) / 2);
