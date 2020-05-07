@@ -116,7 +116,7 @@ public class Vato {
             y += ya;
         }
 
-        if (false) {
+        if (hp < 1) {
             RojoChile.gameOver();
         }
         if (invCount > 0) {

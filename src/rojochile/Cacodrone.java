@@ -158,6 +158,6 @@ public class Cacodrone extends Mob {
 
     public void shoot() {
         balas.add(bullet);
-        cooldown = 180;
+        cooldown = 120;
     }
 }
