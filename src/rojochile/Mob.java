@@ -50,7 +50,9 @@ public class Mob {
     public void move() {
         if (!inactive) {
             pos = new Rectangle(x, y, width, height);
-            Checkhurt();
+            checkhurt();
+            checkBullets();
+            cooldown();
             if (x + xa > 0 && x + xa < RojoChile.mapWidth - width) {
                 x += xa;
             }
@@ -89,17 +91,17 @@ public class Mob {
         if (!inactive) {
             Mob = move;
             g.drawImage(Mob, x - Camera.shot.x, y - Camera.shot.y, null);
-
-            if (Atk && windUp < STDATKT) {
+            if (Atk && windUp < STDATKT && meleeAtkMir != null) {
                 g.setColor(Color.orange);
                 g.draw(meleeAtkMir);
             }
-            if (Atk && windUp >= STDATKT) {
+            if (Atk && windUp >= STDATKT && meleeAtkMir != null) {
                 g.setColor(Color.red);
                 g.draw(meleeAtkMir);
                 Atk = false;
                 windUp = 0;
             }
+            drawBullets(g);
         }
     }
 
@@ -108,7 +110,7 @@ public class Mob {
         Vato.bounce(12, xOrient, yOrient);
     }
 
-    public void Checkhurt() {
+    public void checkhurt() {
         for (Bala i : Vato.balas) {
             if (i.intersects(pos)) {
                 hp -= i.strength;
@@ -120,6 +122,15 @@ public class Mob {
         }
     }
 
+    public void checkBullets() {
+    }
+
+    public void drawBullets(Graphics2D g) {
+    }
+
+    public void cooldown() {
+    }
+
     public void die() {
         inactive = true;
         inactCount = 300;
@@ -127,24 +138,22 @@ public class Mob {
 
     public void closeAction() {
         int n = r.nextInt(100);
+        orient();
         if (!Atk) {
             meleeAtk = new Rectangle(x - meleeRange, y - meleeRange, 2 * meleeRange + width, 2 * meleeRange + height);
             if (meleeAtk.intersects(Vato.getPos()) && n + hostility > 80) {
                 Atk = true;
-            } else if (n < 5) {
+            } else if (n < 10) {
                 xa = xOrient * speed;
-            } else if (n >= 5 && n < 10) {
+            } else if (n >= 10 && n < 20) {
                 ya = yOrient * speed;
-            } else if (n >= 10 && n < 13) {
+            } else if (n >= 20 && n < 26) {
                 xa = -xOrient * speed;
-            } else if (n >= 13 && n < 15) {
+            } else if (n >= 26 && n < 30) {
                 ya = -yOrient * speed;
-            } else if (n >= 15 && n < 20) {
+            } else if (n >= 30 && n < 40) {
                 xa = 0;
-            } else if (n >= 20 && n < 25) {
-                ya = 0;
-            } else if (n >= 25 && n < 27) {
-                xa = 0;
+            } else if (n >= 40 && n < 50) {
                 ya = 0;
             }
         } else {
@@ -190,7 +199,19 @@ public class Mob {
         Vato.vulCount = 0;
     }
 
+    public void assail(int strength) {
+        Vato.hurt(strength * 2);
+        Vato.vulnerable = false;
+        Vato.vulCount = 0;
+    }
+
     public void parried() {
+        Vato.energy += strength;
+        Vato.parrying = false;
+        Vato.parryCount = 0;
+    }
+
+    public void parried(int strength) {
         Vato.energy += strength;
         Vato.parrying = false;
         Vato.parryCount = 0;

@@ -2,10 +2,8 @@ package rojochile;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.util.Random;
@@ -21,7 +19,6 @@ public class FakeMouse {
     static Point prev;
 
     public FakeMouse() {
-        //la posicion inicial no es correcta
         x = Camera.centerShot.x;
         y = Camera.centerShot.y;
         prev = new Point(x + Level.startPosX, y + Level.startPosY);
@@ -55,8 +52,8 @@ public class FakeMouse {
 
     public static double getAngle() {
         double angle;
-        Point a = new Point(Vato.x + Math.round(Vato.width / 2), Vato.y + +Math.round(Vato.height / 2));
-        Point b = upperQuad() ? new Point(x, y) : new Point(x, y + 2 * ((Vato.y + Math.round(Vato.height / 2)) - y));
+        Point a = new Point(Vato.x + Math.round(Vato.width / 2), Vato.y + Math.round(Vato.height / 2));
+        Point b = new Point(x, y);
         Point c = new Point(x, Vato.y + +Math.round(Vato.height / 2));
         double ab = Math.sqrt(Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2));
         double ac = Math.sqrt(Math.pow((a.x - c.x), 2) + Math.pow((a.y - c.y), 2));

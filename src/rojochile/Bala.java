@@ -41,16 +41,22 @@ public class Bala {
         double angle = FakeMouse.getAngle() + (double) angleDev / 1000;
         dx = FakeMouse.rightQuadDev() ? Math.cos(angle) : -Math.cos(angle);
         dy = FakeMouse.upperQuadDev() ? Math.sin(angle) : -Math.sin(angle);
-        strength = 10;
+        strength = 20;
     }
 
-    public Bala(int x, int y, double angle) {
+    public Bala(int x, int y, double angle, int xo, int yo) {
         this.x = x;
         this.y = y;
+        dx = xo == 1 ? Math.cos(angle) : -Math.cos(angle);
+        dy = yo == 1? Math.sin(angle) : -Math.sin(angle);
+        strength = 100;
+        diameter = 10;
     }
 
     public void pintar(Graphics2D g) {
-        if (strength == 100) {
+        if (diameter == 10) {
+            g.setColor(Color.cyan);
+        } else if (strength == 100) {
             g.setColor(new Color(235, 5, 231));
         } else {
             g.setColor(Color.RED);

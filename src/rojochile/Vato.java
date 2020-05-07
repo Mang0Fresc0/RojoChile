@@ -111,15 +111,12 @@ public class Vato {
         }
         if (x + xa > 0 && x + xa < RojoChile.mapWidth - width && x + xa > Camera.loadArea.x && x + xa < Camera.loadArea.x + Camera.loadArea.width - width) {
             x += xa;
-            FakeMouse.x += xa;
         }
         if (y + ya > 0 && y + height + ya < RojoChile.mapHeight && y + ya > Camera.loadArea.y && y + height + ya < Camera.loadArea.y + Camera.loadArea.height && y + ya > Camera.loadArea.y) {
             y += ya;
-            FakeMouse.y += ya;
         }
 
-        if (hp < 1) {
-
+        if (false) {
             RojoChile.gameOver();
         }
         if (invCount > 0) {

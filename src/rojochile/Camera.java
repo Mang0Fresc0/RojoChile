@@ -66,14 +66,16 @@ public class Camera {
             Vato.bouncing = false;
             shot.x = stillShot.x;
             shot.y = stillShot.y;
-            shot.x += shot.x + lxa > loadArea.x && shot.x + shot.width + lxa < loadArea.x + loadArea.width? lxa : 0;
-            shot.y += shot.y + lya > loadArea.y && shot.y + shot.height + lya < loadArea.y + loadArea.height? lya : 0;
+            shot.x += shot.x + lxa > loadArea.x && shot.x + shot.width + lxa < loadArea.x + loadArea.width ? lxa : 0;
+            shot.y += shot.y + lya > loadArea.y && shot.y + shot.height + lya < loadArea.y + loadArea.height ? lya : 0;
             Vato.xa = 0;
             Vato.ya = 0;
         }
         moveShot();
         shot.x += xa;
         shot.y += ya;
+        FakeMouse.x += xa;
+        FakeMouse.y += ya;
         centerShot = new Point((int) shot.getCenterX(), (int) shot.getCenterY());
     }
 
