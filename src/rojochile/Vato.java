@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.ImageIcon;
 
 public class Vato {
@@ -83,7 +84,7 @@ public class Vato {
         }
     }
 
-    public void move() throws IOException {
+    public void move() throws IOException, LineUnavailableException {
         if (shooting) {
             if (delay > 0) {
                 delay--;

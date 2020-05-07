@@ -21,13 +21,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import java.applet.AudioClip;
 import java.awt.Window;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class RojoChile extends JPanel {
 
@@ -46,6 +51,7 @@ public class RojoChile extends JPanel {
     static Window e;
     static RojoChile b;
     static boolean GO = false;
+    static Clip clip;
     Timer timer = new Timer(17, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -163,6 +169,7 @@ public class RojoChile extends JPanel {
         });
 
         setFocusable(true);
+        loop("musica/gaming.wav");
         timer.start();
     }
 
@@ -206,13 +213,14 @@ public class RojoChile extends JPanel {
         }
     }
 
-    public static void gameOver() throws IOException {
+    public static void gameOver() throws IOException, LineUnavailableException {
         if (!GO) {
             GO = true;
             e = SwingUtilities.getWindowAncestor(b);
             e.setVisible(false);
             e.dispose();
-            b.nomusica();
+            clip.stop();
+            loop("musica/TemaIntro.wav");
             MenuMuerte a = new MenuMuerte();
             a.setVisible(true);
         }
@@ -246,16 +254,22 @@ public class RojoChile extends JPanel {
         return new Dimension(W, H);
     }
 
-    public void musica() {
-        AudioClip MusiFondo;
-        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("Resources/musica/gaming.wav"));
-        MusiFondo.loop();
-    }
+    //código robado pa la música
+    public static synchronized void loop(String filename) {
+        if (filename == null) {
+            throw new IllegalArgumentException();
+        }
 
-    public void nomusica() {
-        AudioClip MusiFondo;
-        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("Resources/musica/gaming.wav"));
-        MusiFondo.stop();
+        try {
+            clip = AudioSystem.getClip();
+            InputStream is = RojoChile.class.getResourceAsStream(filename);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(is);
+            clip.open(ais);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException e) {
+        } catch (LineUnavailableException e) {
+        } catch (IOException e) {
+        }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -266,7 +280,6 @@ public class RojoChile extends JPanel {
         frame.getContentPane().setCursor(blankCursor);
         RojoChile game = new RojoChile();
         b = game;
-        game.musica();
         frame.add(game);
         frame.setResizable(false);
         bg = ImageIO.read(new File("Resources/tiles/space.jpg"));
