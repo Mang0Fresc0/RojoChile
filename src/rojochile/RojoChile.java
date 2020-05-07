@@ -60,6 +60,8 @@ public class RojoChile extends JPanel {
                 move();
             } catch (IOException ex) {
                 Logger.getLogger(RojoChile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } catch (LineUnavailableException ex) {
+                Logger.getLogger(RojoChile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
             repaint();
         }
@@ -173,7 +175,7 @@ public class RojoChile extends JPanel {
         timer.start();
     }
 
-    public void move() throws IOException {
+    public void move() throws IOException, LineUnavailableException {
         if (!paused) {
             vato.move();
             camera.move();
