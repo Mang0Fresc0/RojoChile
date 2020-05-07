@@ -248,13 +248,13 @@ public class RojoChile extends JPanel {
 
     public void musica() {
         AudioClip MusiFondo;
-        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
+        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("Resources/musica/gaming.wav"));
         MusiFondo.loop();
     }
 
     public void nomusica() {
         AudioClip MusiFondo;
-        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("/rojochile/Nokia.wav"));
+        MusiFondo = java.applet.Applet.newAudioClip(getClass().getResource("Resources/musica/gaming.wav"));
         MusiFondo.stop();
     }
 
