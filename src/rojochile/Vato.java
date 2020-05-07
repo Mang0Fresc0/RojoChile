@@ -39,8 +39,8 @@ public class Vato {
     static int height = 64;
     static boolean inv = false;
     static int invCount = 0;
-    static int hp = 500;
-    static int energy = 500;
+    static int hp = 800;
+    static int energy = 800;
     static int delay = 0;
     static boolean shooting = false;
     static boolean bouncing = false;
@@ -48,6 +48,7 @@ public class Vato {
     static boolean vulnerable = false;
     static int parryCount = 0;
     static int vulCount = 0;
+    Color parryColor = Color.lightGray;
     static ArrayList<Bala> toDispose = new ArrayList<>();
     static ArrayList<Bala> balas = new ArrayList<>();
 
@@ -78,7 +79,7 @@ public class Vato {
     public void parry() {
         if (!parrying && !vulnerable) {
             parrying = true;
-            parryCount = 10;
+            parryCount = 3;
         }
     }
 
@@ -101,7 +102,7 @@ public class Vato {
             } else if (!vulnerable) {
                 parrying = false;
                 vulnerable = true;
-                vulCount = 60;
+                vulCount = 20;
             }
             if (vulCount > 0) {
                 vulCount--;
@@ -142,6 +143,15 @@ public class Vato {
         g.setColor(Color.black);
         g.drawRect(10, 10, hp, 5);
         g.drawRect(10, 25, energy, 5);
+        if (parrying) {
+            parryColor = Color.cyan;
+        } else if (vulnerable) {
+            parryColor = Color.red;
+        } else {
+            parryColor = Color.gray;
+        }
+        g.setColor(parryColor);
+        g.fillRect(820, 10, 20, 20);
         if (invCount % 2 == 0) {
             g.drawImage(Player, x - Camera.shot.x, y - Camera.shot.y, null);
         }
@@ -193,7 +203,7 @@ public class Vato {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (!bouncing && !FakeMouse.visible && !vulnerable && !parrying) {
+        if (!bouncing && !FakeMouse.visible) {
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 xa = -4;
                 if (ya == 0) {

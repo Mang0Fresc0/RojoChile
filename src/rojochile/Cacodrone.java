@@ -15,6 +15,8 @@ public class Cacodrone extends Mob {
     public Cacodrone(int x, int y) {
         this.x = x;
         this.y = y;
+        width = 32;
+        height = 32;
         speed = 4;
         hostility = 10;
         meleeAtkMir = null;
@@ -30,7 +32,6 @@ public class Cacodrone extends Mob {
 
     @Override
     public void attack() {
-        System.out.println(windUp);
         if (windUp < STDATKT) {
             windUp += agility;
         } else if (windUp >= STDATKT) {
@@ -71,23 +72,23 @@ public class Cacodrone extends Mob {
         int n = r.nextInt(90);
         orient();
         if (!Atk) {
-            if (n + hostility > 90 && cooldown == 0) {
+            if (n + hostility > 80 && cooldown == 0) {
                 aim();
                 Atk = true;
-            } else if (n < 5 && cooldown == 0) {
+            } else if (n < 5) {
                 xa = xOrient;
                 ya = yOrient;
             } else if (n >= 10 && n < 20) {
                 xa = 0;
-                ya = 1;
+                ya = 1 * speed;
             } else if (n >= 20 && n < 30) {
                 xa = 0;
-                ya = -1;
+                ya = -1 * speed;
             } else if (n >= 30 && n < 40) {
-                xa = 1;
+                xa = 1 * speed;
                 ya = 0;
             } else if (n >= 50 && n < 60) {
-                xa = -1;
+                xa = -1 * speed;
                 ya = 0;
             } else if (n >= 50 && n < 70) {
                 xa = -xOrient;

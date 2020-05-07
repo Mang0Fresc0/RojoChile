@@ -21,8 +21,8 @@ public class Mob {
     final int STDATKT = 150;
     int xOrient = 1;
     int yOrient = 1;
-    int height = 64;
-    int width = 64;
+    int height = 48;
+    int width = 56;
     int strength = 100;
     int hostility = 20;
     int agility = 10;
@@ -30,7 +30,7 @@ public class Mob {
     int windUp = 0;
     int kback = 48; //este tiene que ser un múltiplo de cuatro, o puede que la cámara se rompa.
     int hp = 1000;
-    int meleeRange = 100;
+    int meleeRange = 50;
     Rectangle meleeAtk;
     Rectangle meleeAtkMir;
     Rectangle pos;
@@ -206,13 +206,15 @@ public class Mob {
     }
 
     public void parried() {
-        Vato.energy += strength;
+        Vato.energy += Vato.energy < 800 ? strength / 2 : 0;
+        Vato.hp += Vato.hp < 800 ? (int) strength / 2 : 0;
         Vato.parrying = false;
         Vato.parryCount = 0;
     }
 
     public void parried(int strength) {
-        Vato.energy += strength;
+        Vato.energy += Vato.energy < 800 ? strength / 2 : 0;
+        Vato.hp += Vato.hp < 800 ? (int) strength / 2 : 0;
         Vato.parrying = false;
         Vato.parryCount = 0;
     }

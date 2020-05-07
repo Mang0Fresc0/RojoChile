@@ -32,7 +32,7 @@ public class Bala {
         double angle = FakeMouse.getAngle();
         dx = FakeMouse.rightQuad() ? Math.cos(angle) : -Math.cos(angle);
         dy = FakeMouse.upperQuad() ? Math.sin(angle) : -Math.sin(angle);
-        strength = 100;
+        strength = 500;
     }
 
     public Bala(int x, int y, int angleDev) {
@@ -41,7 +41,7 @@ public class Bala {
         double angle = FakeMouse.getAngle() + (double) angleDev / 1000;
         dx = FakeMouse.rightQuadDev() ? Math.cos(angle) : -Math.cos(angle);
         dy = FakeMouse.upperQuadDev() ? Math.sin(angle) : -Math.sin(angle);
-        strength = 20;
+        strength = 100;
     }
 
     public Bala(int x, int y, double angle, int xo, int yo) {
@@ -56,7 +56,7 @@ public class Bala {
     public void pintar(Graphics2D g) {
         if (diameter == 10) {
             g.setColor(Color.cyan);
-        } else if (strength == 100) {
+        } else if (strength == 500) {
             g.setColor(new Color(235, 5, 231));
         } else {
             g.setColor(Color.RED);
